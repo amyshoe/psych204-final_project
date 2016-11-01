@@ -21,6 +21,9 @@
 
 // TODO: make this a function of `problem`, too. 
 // And replace the simple `elif` structure with more complex cognitive notions
+
+//FACTOR statement on student assumptions about what a problem should look like
+//Q: why do people think certain strategies are good for certain problems
 var getAnswer = function(strategy){
     var answer = 
         // STRATEGY: Symbol Manipulation
@@ -77,10 +80,15 @@ var simpleMathProblemSolver = function(problem){
     return answer
 }
 
-var p1 = { verbal: true, story: false }
+//STEPS (order of ops, which ops) ----- input seq vs computing seq
+//TODO: TRY APPLYING STRATEGIES, SEE WHAT INFO YOU NEED, ADD THAT INTO THESE FACTORS
+// TODO: ADD IN MAYBE ACTION/PROCEDURAL VS NOT
+
+// question: WHAT DO DIFFERENT STRATEGEIES DO (TO PROBLEMS) TO GET ANSWER
 
 var model = function(){
-  return simpleMathProblemSolver(p1)
+    var p1 = { verbal: true, story: false } 
+    return simpleMathProblemSolver(p1)
 }
 
 var d = Infer({method: 'forward', samples: 1000}, model)
