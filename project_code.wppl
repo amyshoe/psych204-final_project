@@ -41,6 +41,8 @@ var getAnswer = function(strategy){
 var simpleMathProblemSolver = function(problem){
     // TODO: need to fix this: how do we determine what strategy is used?
     //        can we multinomial sample or something?
+    // OR maybe a dirchilet with percentage values as pseudo counts???
+    //
     // Also, what do we do with unkown column?
     //
     //       UNWIND GUESS/CHECK   SYM_MANIP   NO ANS   ANS ONLY   UNKNOWN
@@ -48,7 +50,29 @@ var simpleMathProblemSolver = function(problem){
     // Word    22      23            11         13        19        12
     // Eq      13      14            22         32        11         8 
     //
-    var strategy = problem.verbal ? "unwind" : "guess_check" // FIX (just filler for now)
+
+    var strategy = 
+        // EQUATION
+        !problem.verbal && !problem.story ? 
+            (flip(.22) ? "symbol_manip" :
+            flip(.14) ? "guess_check" :
+            flip(.13) ? "unwind" :
+            flip(.11) ? "answer_only" :
+            flip(.32) ? "no_answer" : "unknown") :
+        // WORD
+        (problem.verbal && !problem.story ?
+            (flip(.11) ? "symbol_manip" :
+            flip(.23) ? "guess_check" :
+            flip(.22) ? "unwind" :
+            flip(.19) ? "answer_only" :
+            flip(.13) ? "no_answer" : "unknown") :
+        // STORY
+        (!problem.verbal && !problem.story ? 
+            (flip(.05) ? "symbol_manip" :
+            flip(.07) ? "guess_check" :
+            flip(.5) ? "unwind" :
+            flip(.18) ? "answer_only" :
+            flip(.12) ? "no_answer" : "unknown") : "unknown"))
     var answer = getAnswer(strategy)
     return answer
 }
