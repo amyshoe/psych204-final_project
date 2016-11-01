@@ -1,0 +1,64 @@
+// CS428/PSYCH204 Final Project
+// Authors: Amy Shoemaker and Luis Apolaya
+
+
+/////////////////////////////////////////////////////////////////////////////////
+//																			   //
+// As a simple starting model, our simpleMathProblemSolver() uses the problem  //
+// type to determine what strategy is used. 								   //
+//																			   //
+// It then calls on getAnswer() to utilize that strategy to return a boolean   //
+// representing whether a correct or incorrect answer is returned.             //
+//																			   //
+// We then foward sample from this model with given problems 				   //
+// Our current goal is to get the histogram results to align with our priors   //
+// i.e., the percentage results from the Nathan and Koedinger paper            //
+//																			   //
+/////////////////////////////////////////////////////////////////////////////////
+
+//TODO: What are we observing or conditioning on? 
+// ---THIS IS NEARLY DETERMINISTIC RIGHT NOW---
+
+// TODO: make this a function of `problem`, too. 
+// And replace the simple `elif` structure with more complex cognitive notions
+var getAnswer = function(strategy){
+	var answer = 
+		// STRATEGY: Symbol Manipulation
+		strategy == "symbol_manip" ? flip(.51) :
+		// STRATEGY: Guess n check
+	    strategy == "guess_check" ? flip(.71) :
+	    // STRATEGY: Unwind
+	    strategy == "unwind" ? flip(.69) :
+		// STRATEGY: Answer only 
+		strategy == "answer_only" ? flip(.56) : 
+		// No answer
+		false
+
+	// 19/1976 chance of typo (otherwise return answer)
+	return flip(.0096) ? false : answer
+}
+
+var simpleMathProblemSolver = function(problem){
+	// TODO: need to fix this: how do we determine what strategy is used?
+	//        can we multinomial sample or something?
+	// Also, what do we do with unkown column?
+	//
+	//       UNWIND GUESS/CHECK   SYM_MANIP   NO ANS   ANS ONLY   UNKNOWN
+	// Story   50       7             5         12        18         8 
+	// Word    22      23            11         13        19        12
+	// Eq      13      14            22         32        11         8 
+    //
+	var strategy = problem.verbal ? "unwind" : "guess_check" // FIX (just filler for now)
+	var answer = getAnswer(strategy)
+	return answer
+}
+
+var p1 = { verbal: true, story: false }
+
+var model = function(){
+  return simpleMathProblemSolver(p1)
+}
+
+var d = Infer({method: 'forward', samples: 1000}, model)
+
+d
