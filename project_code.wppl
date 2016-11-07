@@ -16,66 +16,69 @@
 //                                                                             //
 /////////////////////////////////////////////////////////////////////////////////
 
-//TODO: What are we observing or conditioning on? 
-// ---THIS IS NEARLY DETERMINISTIC RIGHT NOW---
+var eq2procedure = function(problem){
+    //blue success
+}
 
-// TODO: make this a function of `problem`, too. 
-// And replace the simple `elif` structure with more complex cognitive notions
+var story2procedure = function(problem){
+    // if problem.num_refs == 1: green success
+    // if problem.num_refs == 2: red success
+}
+
+var story2eq = function(problem){
+    // blue success
+}
 
 //FACTOR statement on student assumptions about what a problem should look like
 //Q: why do people think certain strategies are good for certain problems
-var getAnswer = function(strategy){
+var getAnswer = function(problem, strategy){
+    // STORY
+    var path_to_follow = problem.story ?
+        (strategy == "arithmetic" ? story2procedure(problem) : story2eq(problem)) :
+    // EQUATION
+        strategy == "mixed" ? eq2procedure(problem) : //do nothing
+
     var answer = 
-        // STRATEGY: Symbol Manipulation
-        strategy == "symbol_manip" ? flip(.51) :
-        // STRATEGY: Guess n check
-        strategy == "guess_check" ? flip(.71) :
-        // STRATEGY: Unwind
-        strategy == "unwind" ? flip(.69) :
-        // STRATEGY: Answer only 
-        strategy == "answer_only" ? flip(.56) : 
-        // No answer
-        false
+        // TODO: use `path_to_follow` and problem.num_refs
+        // if strategy == mixed || arith:
+            // if problem.num_refs == 1: green success
+            // else (problem.num_refs == 2) : red success
+        // else (strategy == alg): blue success
+
+        // TODO: use `path_to_follow` to get the above success probs.
+        
+
+        // KEPT THIS: (it may be helpful to have these probs for the 1ref arith strategies)
+        //EQU ARITH CHOICES
+        // (flip(.22) ? "symbol_manip" :
+        //     flip(.14) ? "guess_check" :
+        //     flip(.13) ? "unwind" :
+        //     flip(.11) ? "answer_only" :
+        //     flip(.32) ? "no_answer" : "unknown") :
+        // STORY ARITH CHOICES
+         // (flip(.05) ? "symbol_manip" :
+         //    flip(.07) ? "guess_check" :
+         //    flip(.5) ? "unwind" :
+         //    flip(.18) ? "answer_only" :
+         //    flip(.12) ? "no_answer" : "unknown") : "unknown"
 
     // 19/1976 chance of typo (otherwise return answer)
     return flip(.0096) ? false : answer
 }
 
 var simpleMathProblemSolver = function(problem){
-    // TODO: need to fix this: how do we determine what strategy is used?
-    //        can we multinomial sample or something?
-    // OR maybe a dirchilet with percentage values as pseudo counts???
-    //
-    // Also, what do we do with unkown column?
-    //
-    //       UNWIND GUESS/CHECK   SYM_MANIP   NO ANS   ANS ONLY   UNKNOWN
-    // Story   50       7             5         12        18         8 
-    // Word    22      23            11         13        19        12
-    // Eq      13      14            22         32        11         8 
-    //
+    
+    // TODO: the flip values here have no backing
 
     var strategy = 
-        // EQUATION
-        !problem.verbal && !problem.story ? 
-            (flip(.22) ? "symbol_manip" :
-            flip(.14) ? "guess_check" :
-            flip(.13) ? "unwind" :
-            flip(.11) ? "answer_only" :
-            flip(.32) ? "no_answer" : "unknown") :
-        // WORD
-        (problem.verbal && !problem.story ?
-            (flip(.11) ? "symbol_manip" :
-            flip(.23) ? "guess_check" :
-            flip(.22) ? "unwind" :
-            flip(.19) ? "answer_only" :
-            flip(.13) ? "no_answer" : "unknown") :
         // STORY
-        (!problem.verbal && !problem.story ? 
-            (flip(.05) ? "symbol_manip" :
-            flip(.07) ? "guess_check" :
-            flip(.5) ? "unwind" :
-            flip(.18) ? "answer_only" :
-            flip(.12) ? "no_answer" : "unknown") : "unknown"))
+        problem.story ? 
+            (flip(.8) ? "arithmetic" :
+            flip(.2) ? "mixed" :
+            flip(.4) ? "algebraic" : "unknown") :
+        // EQUATION
+        ((flip(.5) ? "mixed" :
+        flip(.8) ? "algebraic" : "unknown") : "unknown")
     var answer = getAnswer(strategy)
     return answer
 }
