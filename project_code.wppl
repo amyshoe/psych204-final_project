@@ -79,7 +79,7 @@ var simpleMathProblemSolver = function(problem){
         // EQUATION
         ((flip(.5) ? "mixed" :
         flip(.8) ? "algebraic" : "unknown") : "unknown")
-    var answer = getAnswer(strategy)
+    var answer = getAnswer(problem, strategy)
     return answer
 }
 
@@ -90,7 +90,9 @@ var simpleMathProblemSolver = function(problem){
 // question: WHAT DO DIFFERENT STRATEGEIES DO (TO PROBLEMS) TO GET ANSWER
 
 var model = function(){
-    var p1 = { verbal: true, story: false } 
+    var p1 = {story: false, 
+              num_refs: 1,
+              input: []} 
     return simpleMathProblemSolver(p1)
 }
 
