@@ -1,0 +1,46 @@
+var eq2procedure = function(problem){
+    //blue success
+}
+
+var story2procedure = function(problem){
+    // if problem.num_refs == 1: green success
+    // if problem.num_refs == 2: red success
+}
+
+var story2eq = function(problem){
+    // blue success
+}
+
+var getAnswer = function(problem, strategy) {
+	//
+}
+
+var model = function() {
+
+	// Data
+	var problem1 = {...}
+	var problem2 = {...}
+	var observedData = [problem1, problem2]
+	var trueAnswers = [...]
+	var indices = [...] // range(observedData.length)
+
+	// Choose a strategy for each problem <-----------------------TODO: not sure if this will prevent updates to the prior
+																	//  for specific problems. maybe need to not use repeat
+																	//  and instead chooseStrategy for each problem?
+																	//  (In which case, this set up is overkill?)
+	var strategies = ['unwind', 'guess_check', 'sym_manip']
+	// prior for which strategy: unwind/untangle, guess n check, symbolic manip
+	var stratToUse = function(problem){return T.toScalars(dirichlet(ones([strategies.length, 1])))}
+	var chooseStrategies = function(problem){
+  		var probs = stratToUse(problem);
+  		return repeat(observedData.length, function(){return categorical({vs: strategies, ps: probs})});
+	}
+
+	// get answers, and condition on those answers being true
+	var myAnswers = mapData({data: observedData, mapData({data: observedData}, chooseStrategies)}, getAnswer)
+	var obsFn = function(idx) {condition(myAnswers[idx]) == trueAnswers[idx]}
+	mapData({data: indices}, obsFn)
+
+	return myAnswers
+
+}
