@@ -34,11 +34,13 @@ var model = function() {
 		// num_refs: 1/2
 		// inputs:
 		// operations: 
-	var problem1 = {...}
-	var problem2 = {...}
-	var observedData = [problem1, problem2]
-	var trueAnswers = [...]
-	var indices = [...] // range(observedData.length)
+	var problem1 = {verbal: true, inputs: [6, 'x', 66, 84], ops: ['per', 'and', 'total']}
+	var problem2 = {verbal: false, inputs: ['x', 6, 66, 84], ops: ['*', '+', '=']}
+	var problem3 = {verbal: true, inputs: [3, 'x', 64, 133], ops: ['each', 'and', 'is']}
+	var problem4 = {verbal: false, inputs: [3, 'x', 64, 133], ops: ['*', '+', '=']}
+	var observedData = [problem1, problem2, problem3, problem4]
+	var trueAnswers = [3, 3, 23, 23]
+	var indices = [0,1,2,3] // range(observedData.length)
 
 	// Choose a strategy for each problem <-----------------------TODO: not sure if this will prevent updates to the prior
 																	//  for specific problems. maybe need to not use repeat
