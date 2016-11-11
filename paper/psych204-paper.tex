@@ -1,0 +1,191 @@
+% 
+% Annual Cognitive Science Conference
+% Sample LaTeX Paper -- Proceedings Format
+% 
+
+% Original : Ashwin Ram (ashwin@cc.gatech.edu)       04/01/1994
+% Modified : Johanna Moore (jmoore@cs.pitt.edu)      03/17/1995
+% Modified : David Noelle (noelle@ucsd.edu)          03/15/1996
+% Modified : Pat Langley (langley@cs.stanford.edu)   01/26/1997
+% Latex2e corrections by Ramin Charles Nakisa        01/28/1997 
+% Modified : Tina Eliassi-Rad (eliassi@cs.wisc.edu)  01/31/1998
+% Modified : Trisha Yannuzzi (trisha@ircs.upenn.edu) 12/28/1999 (in process)
+% Modified : Mary Ellen Foster (M.E.Foster@ed.ac.uk) 12/11/2000
+% Modified : Ken Forbus                              01/23/2004
+% Modified : Eli M. Silk (esilk@pitt.edu)            05/24/2005
+% Modified : Niels Taatgen (taatgen@cmu.edu)         10/24/2006
+% Modified : David Noelle (dnoelle@ucmerced.edu)     11/19/2014
+
+%% Change "letterpaper" in the following line to "a4paper" if you must.
+
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{cogsci}
+\usepackage{pslatex}
+\usepackage{apacite}
+
+
+\title{Witty Lead-in: Learning Algebra Problem-Solving Strategies}
+ 
+\author{{\large \bf Luis Apolaya (apolaya@stanford.edu)} \\
+  Department of Symbolic Systems, Stanford University
+  \AND {\large \bf Amy Shoemaker (amyshoe@stanford.edu)} \\
+  Institute for Computational and Mathematical Engineering, Stanford University}
+
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+The abstract should be one paragraph, indented 1/8~inch on both sides,
+in 9~point font with single spacing. The heading ``{\bf Abstract}''
+should be 10~point, bold, centered, with one line of space below
+it. This one-paragraph abstract section is required only for standard
+six page proceedings papers. Following the abstract should be a blank
+line, followed by the header ``{\bf Keywords:}'' and a list of
+descriptive keywords separated by semicolons, all in 9~point font, as
+shown below.
+
+\textbf{Keywords:} 
+add your choice of indexing terms or keywords; kindly use a
+semicolon; between each term
+\end{abstract}
+
+
+\section{Introduction}
+
+Mini intro on algebra in general and word problems are interesting from a cognitive perspective
+
+\subsection{Questioning Formalism First}
+
+It is widely believed in mathematics education that symbolic representations of algebra problems are easier than verbal or story problems testing the same information and thus should be introduced first [CITE a bunch of the dudes nathan cites in that first paper we read]. Indeed, problems expressed in symbolic notation can be manipulated more easily than verbal problems, as all the relevant parts of the problem are present in the symbols and students do not have to identify the key parts of the problem from within a story context. On the other hand, verbal problems can ground the scenario in a more relatable, real-life manner, which may heighten students’ intuition or provide insight into what problem-solving strategy to use. Though surveys in \citeA{Nathan2012} show that teachers think symbolic problems are likely to be solved correctly, \citeA{KoedNath2004} show a disparity in the teachers' beliefs and students' performance, as students in their study show a higher rate of success for verbal problems.
+
+\citeA{KoedNath2004} confirmed...(verbal hypothesis)
+
+\subsection{Arithmetic Interference on Algebra}
+
+Singapore
+
+\subsection{Single- versus Double-Reference Algebra Problems}
+
+Koedinger and Nathan 2008
+
+
+
+\section{Model}
+
+First level headings should be in 12~point, initial caps, bold and
+centered. Leave one line space above the heading and 1/4~line space
+below the heading.
+
+
+\subsection{Second Level Headings}
+
+Second level headings should be 11~point, initial caps, bold, and
+flush left. Leave one line space above the heading and 1/4~line
+space below the heading.
+
+\section{Results}
+
+Result synopsis
+
+\subsection{Results with 2004 data}
+
+\subsection{Results with 2008 data}
+
+Third level headings should be 10~point, initial caps, bold, and flush
+left. Leave one line space above the heading, but no space after the
+heading.
+
+
+\section{Discussion}
+
+Use standard APA citation format. Citations within the text should
+include the author's last name and year. If the authors' names are
+included in the sentence, place only the year in parentheses, as in
+\citeA{Nathan2012}, but otherwise place the entire reference in
+parentheses with the authors and year separated by a comma
+\cite{Nathan2012}. List multiple references alphabetically and
+separate them by semicolons
+\cite{Nathan2012,KoedNath2004}. Use the
+``et~al.'' construction only after listing all the authors to a
+publication in an earlier reference and for citations with four or
+more authors.
+
+Indicate footnotes with a number\footnote{Sample of the first
+footnote.} in the text. Place the footnotes in 9~point type at the
+bottom of the column on which they appear. Precede the footnote block
+with a horizontal rule.\footnote{Sample of the second footnote.}
+
+Number tables consecutively. Place the table number and title (in
+10~point) above the table with one line space above the caption and
+one line space below it, as in Table~\ref{sample-table}. You may float
+tables to the top or bottom of a column, or set wide tables across
+both columns.
+
+\begin{table}[!ht]
+\begin{center} 
+\caption{Sample table title.} 
+\label{sample-table} 
+\vskip 0.12in
+\begin{tabular}{ll} 
+\hline
+Error type    &  Example \\
+\hline
+Take smaller        &   63 - 44 = 21 \\
+Always borrow~~~~   &   96 - 42 = 34 \\
+0 - N = N           &   70 - 47 = 37 \\
+0 - N = 0           &   70 - 47 = 30 \\
+\hline
+\end{tabular} 
+\end{center} 
+\end{table}
+
+
+\subsection{Figures}
+
+All artwork must be very dark for purposes of reproduction and should
+not be hand drawn. Number figures sequentially, placing the figure
+number and caption, in 10~point, after the figure with one line space
+above the caption and one line space below it, as in
+Figure~\ref{sample-figure}. If necessary, leave extra white space at
+the bottom of the page to avoid splitting the figure and figure
+caption. You may float figures to the top or bottom of a column, or
+set wide figures across both columns.
+
+\begin{figure}[ht]
+\begin{center}
+\fbox{CoGNiTiVe ScIeNcE}
+\end{center}
+\caption{This is a figure.} 
+\label{sample-figure}
+\end{figure}
+
+
+\section{Acknowledgments}
+
+Place acknowledgments (including funding information) in a section at
+the end of the paper.
+
+
+%\nocite{ChalnickBillman1988a}
+%\nocite{Feigenbaum1963a}
+%\nocite{Hill1983a}
+%\nocite{OhlssonLangley1985a}
+% \nocite{Lewis1978a}
+%\nocite{Matlock2001}
+%\nocite{NewellSimon1972a}
+%\nocite{ShragerLangley1990a}
+
+
+\bibliographystyle{apacite}
+
+\setlength{\bibleftmargin}{.125in}
+\setlength{\bibindent}{-\bibleftmargin}
+
+\bibliography{CogSci_Template}
+
+
+\end{document}

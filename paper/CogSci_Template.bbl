@@ -1,0 +1,53 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Koedinger%
+\ \BBA {} Nathan%
+}{%
+Koedinger%
+\ \BBA {} Nathan%
+}{%
+{\protect \APACyear {2004}}%
+}]{%
+KoedNath2004}
+\APACinsertmetastar {%
+KoedNath2004}%
+\begin{APACrefauthors}%
+Koedinger, K\BPBI R.%
+\BCBT {}\ \BBA {} Nathan, M\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2004}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The real story behind story problems: Effects of
+  representations on quantitative reasoning} {The real story behind story
+  problems: Effects of representations on quantitative reasoning}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of the Learning Sciences}{13}{}{129--164}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nathan%
+}{%
+Nathan%
+}{%
+{\protect \APACyear {2012}}%
+}]{%
+Nathan2012}
+\APACinsertmetastar {%
+Nathan2012}%
+\begin{APACrefauthors}%
+Nathan, M\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Rethinking formalisms in formal education} {Rethinking
+  formalisms in formal education}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Educational Psychologist}{47}{}{125--148}.
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
