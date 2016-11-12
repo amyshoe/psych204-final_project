@@ -42,6 +42,11 @@ var guess_check = function(problem, time_remaining){
 
 var getAnswer = function(problem, strategy, time_remaining) {
 	// DO ANY NECESSARY CONVERSIONS
+	//rather than converting an input to a different notation through an outside function,
+	//we can impose a time penalty and an error probability (not yet implemented)
+	
+	//TODO: consider errors in translation beyond the time penalty
+
 	if (strategy == "u_w") {
 		if (!problem.verbal) time_remaining = time_remaining - 1;
 		return unwind(problem, time_remaining);
