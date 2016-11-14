@@ -9,10 +9,14 @@
 
 var story2eq = function(problem){
     // TODO : fix this, since mutating arrays is not allowed in webppl (even in globalStore)
-    problem.ops.slice(1+find(function(x){return (x == 'is') || (x == 'total');}, problem.ops)) = '='
-    problem.ops.slice(1+find(function(x){return (x == 'and');}, problem.ops)) = '+'
-    problem.inputs.slice(1+find(function(x){return (x == 'per') || (x == 'each');}, problem.ops)) = '*'
+    //			without hacky hardcode ways that don't allow for problem flexibility
+
+    // problem.ops.slice(1+find(function(x){return (x == 'is') || (x == 'total');}, problem.ops)) = '='
+    // problem.ops.slice(1+find(function(x){return (x == 'and');}, problem.ops)) = '+'
+    // problem.inputs.slice(1+find(function(x){return (x == 'per') || (x == 'each');}, problem.ops)) = '*'
+    var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
     increment_time(1)
+    return modified_problem
 }
     
 
@@ -52,7 +56,7 @@ var model = function() {
         // else { // equation problem 
         //  if (strategy != 'sym_manip') {eq2procedure(problem)}
         // }
-        if (problem.verbal && strategy == 'sym_manip') {story2eq(problem)}
+        if (problem.verbal && strategy == 'sym_manip') {var problem = story2eq(problem)}
         
         // SOLVE THE PROBLEM
         if (strategy == 'unwind') { ////////////////////////////// /// UNWIND ///
@@ -89,7 +93,10 @@ var model = function() {
             }
             increment_time(1)
             // only return answer if they didn't run out of time
-            globalStore.time_elapsed < 18 ? return globalStore.ans; : return None;
+            if (globalStore.time_elapsed < 18) {
+            	return globalStore.ans;
+            } else {return None;}
+            // (globalStore.time_elapsed < 18) ? (return globalStore.ans;) : (return None;)
         } 
 
         else if (strategy == 'guess_check') { /////////////////// /// GUESS AND CHECK ///
@@ -110,9 +117,9 @@ var model = function() {
                                      : new_inputs.push(problem.inputs[-1] / problem.inputs[-2])
                 var simplified_problem = {verbal: false, inputs: new_inputs, ops: problem.ops.slice(1)}
                 increment_time(1)
-                if globalStore.time_elapsed < 18 { // if time allows, recurse!
-                    return getAnswer(simplified_problem, 'sym_manip')
-                } else {return None}
+                if (globalStore.time_elapsed < 18) { // if time allows, recurse!
+                    return getAnswer(simplified_problem, 'sym_manip');
+                } else {return None;}
             } else if (problem.ops.length > 2) { // PEMDAS error -- can only happen with multiple ops
                 if(flip(0.8)) { // correct op balancing
                     var new_inputs = ['x']
@@ -120,18 +127,18 @@ var model = function() {
                     new_inputs.push(problem.inputs.slice(-1) / problem.inputs.slice(1))
                     var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
 	                increment_time(1)
-	                if globalStore.time_elapsed < 18 { // if time allows, recurse!
-	                    return getAnswer(simplified_problem, 'sym_manip')
-	                } else {return None}
+	                if (globalStore.time_elapsed < 18) { // if time allows, recurse!
+	                    return getAnswer(simplified_problem, 'sym_manip');
+	                } else {return None;}
                 } else { // error in op balancing
                     var new_inputs = ['x']
                     new_inputs.push(problem.inputs.slice(-2) / problem.inputs.slice(1))
                     new_inputs.push(problem.inputs.slice(-1))
                     var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
 	                increment_time(1)
-	                if globalStore.time_elapsed < 18 { // if time allows, recurse!
-	                    return getAnswer(simplified_problem, 'sym_manip')
-	                } else {return None}
+	                if (globalStore.time_elapsed < 18) { // if time allows, recurse!
+	                    return getAnswer(simplified_problem, 'sym_manip');
+	                } else {return None;}
                 }
             }
         }
