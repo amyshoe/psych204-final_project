@@ -1,14 +1,17 @@
-var eq2procedure = function(problem){
-    //blue success
-}
+// var eq2procedure = function(problem){
+//     //blue success
+// }
 
-var story2procedure = function(problem){
-    // if problem.num_refs == 1: green success
-    // if problem.num_refs == 2: red success
-}
+// var story2procedure = function(problem){
+//     // if problem.num_refs == 1: green success
+//     // if problem.num_refs == 2: red success
+// }
 
 var story2eq = function(problem){
-    // blue success
+    problem.ops[1+find(function(x){return (x == 'is') || (x == 'total');}, problem.ops)] = '='
+	problem.ops[1+find(function(x){return (x == 'and');}, problem.ops)] = '+'
+	problem.inputs[find(function(x){return (x == 'per') || (x == 'each');}, problem.ops)] = '*'
+	increment_time(1)
 }
 	
 
@@ -21,13 +24,15 @@ var model = function() {
 		// inputs:
 		// operations: 
 	var problem1 = {verbal: true, inputs: [6, 'x', 66, 84], ops: ['per', 'and', 'total']}
-	var problem2 = {verbal: false, inputs: ['x', 6, 66, 84], ops: ['*', '+', '=']}
+	var problem2 = {verbal: false, inputs: [6, 'x', 66, 84], ops: ['*', '+', '=']}
 	var problem3 = {verbal: true, inputs: [3, 'x', 64, 133], ops: ['each', 'and', 'is']}
 	var problem4 = {verbal: false, inputs: [3, 'x', 64, 133], ops: ['*', '+', '=']}
 	var observedData = [problem1, problem2, problem3, problem4]
 	var trueAnswers = [3, 3, 23, 23]
 	var indices = [0,1,2,3] // range(observedData.length)
-	globalStore.time_elapsed = []
+	globalStore.time_elapsed = 0
+
+	var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
 
 	// Choose a strategy for each problem <-----------------------TODO: not sure if this will prevent updates to the prior
 																	//  for specific problems. maybe need to not use repeat
@@ -54,45 +59,64 @@ var model = function() {
 		if (problem.verbal && strategy == 'sym_manip') {story2eq(problem)}
 		
 		// SOLVE THE PROBLEM
-		if (strategy == 'unwind') { // unwind
-			// errors: PEMDAS mistakes
-			// strat: look just at two numbers alone, performing op after op
+		if (strategy == 'unwind') { /////////////////////////////// UNWIND
 			if (problem.verbal) {
-				//do the correct order op (first look for per/each)
-				// do the op with inputs[idx] and inputs[idx+1]
-				globalStore.time_elapsed.push(1)
-				// check time elapsed
-				// repeat
+				if (flip(.5)) {
+					//do the correct reverse order op (first look for 'total/is' then 'and', then 'per/each')
+					globalStore.ans = problem.inputs[1+find(function(x){return (x == 'is') || (x == 'total');}, problem.ops)]
+					increment_time(1) 
+					globalStore.ans -= problem.inputs[1+find(function(x){return (x == 'and');}, problem.ops)]
+					increment_time(1)
+					globalStore.ans /= problem.inputs[find(function(x){return (x == 'per') || (x == 'each');}, problem.ops)]	
+				} else { //PEMDAS error
+					globalStore.ans = problem.inputs[1+find(function(x){return (x == 'is') || (x == 'total');}, problem.ops)] 
+					increment_time(1)
+					globalStore.ans /= problem.inputs[find(function(x){return (x == 'per') || (x == 'each');}, problem.ops)]
+					increment_time(1)
+					globalStore.ans -= problem.inputs[1+find(function(x){return (x == 'and');}, problem.ops)]	
+				}
+			} else { // eq problem
+				if (flip(.7)) {
+					//do the correct reverse order op (first look for '=' then '+', then '*')
+					globalStore.ans = problem.inputs[1+find(function(x){return (x == '=');}, problem.ops)] 
+					increment_time(1)
+					globalStore.ans -= problem.inputs[1+find(function(x){return (x == '+');}, problem.ops)]
+					increment_time(1)
+					globalStore.ans /= problem.inputs[find(function(x){return (x == '*');}, problem.ops)]
+				} else { //PEMDAS error
+					globalStore.ans = problem.inputs[1+find(function(x){return (x == '=');}, problem.ops)]
+					increment_time(1) 
+					globalStore.ans /= problem.inputs[find(function(x){return (x == '*');}, problem.ops)]
+					increment_time(1)
+					globalStore.ans -= problem.inputs[1+find(function(x){return (x == '+');}, problem.ops)]	
+				}
 			}
-			else { // eq problem
-				// flip to get choose * or + first
-				// do the op with inputs[idx] and inputs[idx+1]
-				globalStore.time_elapsed.push(1)
-				// check time elapsed
-				// repeat
-			}
-			// return ans
-		} else if (strategy == 'guess_check') { // guess and check
+			increment_time(1)
+			// only return answer if they didn't run out of time
+			globalStore.time_elapsed < 18 ? return globalStore.ans : return None
+		} 
+
+		else if (strategy == 'guess_check') { ///////////////////// GUESS AND CHECK
 			// go through list of possible solutions (random selection w/o replacement)
 			// check if solution makes the equation balanced. <------------------- TODO: need a case of story vs eq
 			// add a time unit 
-			globalStore.time_elapsed.push(1)
+			increment_time(1)
 			// check time elapsed
 			// eq not balanced and time allows, repeat. else, return ans
-		} else { // symb manip
+		} else { /////////////////////////////////////////////////// SYMBOL MANIPULATION
 			// flip for * or +
 			// flip for performing reverse ops to both sides of op vs =
 			// rewrite equation
-			globalStore.time_elapsed.push(1)
+			increment_times(1)
 			// check if time allows
 			// recursion
 			// NOTE: base case............
 		}
 		//NOTE at several points in this algo, check if time >= 18, and return None if that's the case
-
+	}
 
 	// get answers, and condition on those answers being true
-	var myAnswers = map2(getAnswer, observedData, mapData({data: observedData}, chooseStrategies)})
+	var myAnswers = map2(getAnswer, observedData, mapData({data: observedData}, chooseStrategies))
 
 	var obsFn = function(idx) {condition(myAnswers[idx]) == trueAnswers[idx]}
 	mapData({data: indices}, obsFn)
