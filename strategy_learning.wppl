@@ -10,22 +10,23 @@
 var model = function() {
 
     // Data
-    var problem1 = {verbal: true, inputs: ['x', 6, 66, 84], ops: ['per', 'and', 'total']}
+//     var problem1 = {verbal: true, inputs: ['x', 6, 66, 84], ops: ['per', 'and', 'total']}
     var problem2 = {verbal: false, inputs: ['x', 6, 66, 84], ops: ['*', '+', '=']}
-    var problem3 = {verbal: true, inputs: ['x', 3, 64, 133], ops: ['each', 'and', 'is']}
+//     var problem3 = {verbal: true, inputs: ['x', 3, 64, 133], ops: ['each', 'and', 'is']}
     var problem4 = {verbal: false, inputs: ['x', 3, 64, 133], ops: ['*', '+', '=']}
-    var observedData = [problem1, problem2, problem3, problem4]
-    var trueAnswers = [3, 3, 23, 23]
+//     var observedData = [problem1, problem2, problem3, problem4]
+    var observedData = [problem2, problem4]
+    var trueAnswers = [3, 23]
+//     var trueAnswers = [3, 3, 23, 23]
     var indices = [0,1,2,3] // range(observedData.length)
     globalStore.time_elapsed = 0
     var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
     
     var strategies = ['unwind', 'guess_check', 'sym_manip']
     // prior for which strategy: unwind/untangle, guess n check, symbolic manip
-    var stratToUse = function(){return T.toScalars(dirichlet(ones([strategies.length, 1])))}
+    var stratPrior = T.toScalars(dirichlet(ones([strategies.length, 1])))
     var chooseStrategies = function(){
-        var probs = stratToUse();
-        return repeat(observedData.length, function(){return categorical({vs: strategies, ps: probs})});
+        return repeat(observedData.length, function(){return categorical({vs: strategies, ps: stratPrior})});
     }
     
     var story2eq = function(problem){
@@ -35,9 +36,19 @@ var model = function() {
       // problem.ops.slice(1+find(function(x){return (x == 'is') || (x == 'total');}, problem.ops)) = '='
       // problem.ops.slice(1+find(function(x){return (x == 'and');}, problem.ops)) = '+'
       // problem.inputs.slice(1+find(function(x){return (x == 'per') || (x == 'each');}, problem.ops)) = '*'
-      var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
-      increment_time(1)
-      return modified_problem
+      if(flip(0.1)) { // correct translation
+        var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
+        increment_time(3)
+        return modified_problem
+      } else { // switched a and b --> x*b + a = c
+        var new_inputs = ['x']
+        new_inputs.push(Math.floor(problem.inputs.slice(2,3)))
+        new_inputs.push(Math.floor(problem.inputs.slice(1,2)))
+        new_inputs.push(Math.floor(problem.inputs.slice(-1)))
+        var modified_problem = {verbal: true, inputs: new_inputs, ops: ['*', '+', '=']}
+        increment_time(3)
+        return modified_problem
+      }
     }
     
     // MAIN PART OF THE MODEL
@@ -59,7 +70,7 @@ var model = function() {
             //          FOR X*A+B=C EQUATIONS.
             // TODO: MAKE MORE GENERAL/FLEXIBLE
             if (problem.verbal) {
-                if (flip(.8)) {
+                if (flip(.9)) {
                     //do the correct reverse order op (first look for 'total/is' then 'and', then 'per/each')
                     globalStore.ans = Math.floor(problem.inputs.slice(-1)) // RHS of 'total/is'
                     // increment_time(1) 
@@ -74,7 +85,7 @@ var model = function() {
                     increment_time(1)
                 }
             } else { // eq problem
-                if (flip(.5)) {
+                if (flip(.4)) {
                     //do the correct reverse order op (first look for '=' then '+', then '*')
                     globalStore.ans = Math.floor(problem.inputs.slice(-1))// RHS of '='
                     // increment_time(1)
@@ -126,7 +137,7 @@ var model = function() {
                 return Math.floor(problem.inputs.slice(-1))
             }
             // else, ops.length == 2 or 3
-            if (flip(.6) || problem.ops.length == 2) { //correct PEMDAS and op balancing
+            if (flip(.7) || problem.ops.length == 2) { //correct PEMDAS and op balancing
                 if (problem.ops.length == 2) { // of the form x*a=c or x+b=c
                     var new_inputs = ['x']
                     if ('+' in problem.ops) {
@@ -178,10 +189,22 @@ var model = function() {
 
     var obsFn = function(idx) {condition(myAnswers[idx] == trueAnswers[idx])}
     mapData({data: indices}, obsFn)
-
-    return {answers: myAnswers, strategies: myStrategies}
+  
+//     var eqStrats = _.union(myStrategies.slice(0,1), myStrategies.slice(2,3))
+//     var eqStrats = myStrategies.slice(3,4)
+//     var storyStrats = _.union(myStrategies.slice(1,2), myStrategies.slice(3,4))
+//     var storyStrats = myStrategies.slice(2,3)
+//     return eqStrats
+    return {answers: myAnswers, 
+            guessCheckProb: stratPrior[0]}
+//     return {eq_strategies: eqStrats}
+//     return {story_strategies: storyStrats}    
 }
 
-var d = Infer({method: 'MCMC', samples: 1000}, model)
+var d = Infer({method: 'MCMC', samples: 10000}, model)
 // var d = Infer({method: 'rejection', samples: 1000}, model)
-d
+viz.marginals(d)
+
+//THING1:  DECOMPOSITION
+//THING2:  POSTERIOR PREDICTIVES (NEW DATA)
+//THING3:  TRY DIFFERENT PRIORS FOR DIFFERENT PROBLEMS
