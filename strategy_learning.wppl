@@ -20,8 +20,7 @@ var model = function() {
     globalStore.time_elapsed = 0
     var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
     
-    // var strategies = ['unwind', 'guess_check', 'sym_manip']
-    var strategies = ['unwind', 'sym_manip']
+    var strategies = ['unwind', 'guess_check', 'sym_manip']
     // prior for which strategy: unwind/untangle, guess n check, symbolic manip
     var stratToUse = function(){return T.toScalars(dirichlet(ones([strategies.length, 1])))}
     var chooseStrategies = function(){
@@ -99,13 +98,28 @@ var model = function() {
         } 
 
         else if (strategy == 'guess_check') { /////////////////// /// GUESS AND CHECK ///
-            // uniform draw 1:10
-            // check if solution makes the equation balanced. <------------------- TODO: need a case of story vs eq
-            // shift range 
-            // add a time unit
-            increment_time(1)
-            // check time elapsed
-            // eq not balanced and time allows, repeat. else, return ans
+            // guess and check helper function
+            var make_guess = function(lower, upper) {
+                var guess = uniformDraw(_.range(lower,upper))
+                var plugged_in = guess * Math.floor(problem.inputs.slice(1,2)) + Math.floor(problem.inputs.slice(2,3))
+                if (plugged_in < Math.floor(problem.inputs.slice(-1))) { // guess was too small
+                    increment_time(2)
+                    if (globalStore.time_elapsed < 30) {
+                        return make_guess(guess + 1, guess + 10)
+                    } else {return null}
+                } else if (plugged_in > Math.floor(problem.inputs.slice(-1))) { // guess was too large
+                    increment_time(2)
+                    if (globalStore.time_elapsed < 30) {
+                        return make_guess(guess - 10, guess - 1)
+                    } else {return null}
+                } else { // guess was correct
+                    return guess
+                }
+            }
+            var lower = 1
+            var upper = 11
+            return make_guess(lower, upper)
+
         } else { //////////////////////////////////////////////// /// SYMBOL MANIPULATION ///
             // TODO: make this all more flexible...now it only works for x*a+b=c format
             if (problem.ops.length == 1) { // base case
