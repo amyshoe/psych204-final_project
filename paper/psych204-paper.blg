@@ -46,10 +46,12 @@ You're missing a field name---line 86 of file CogSci_Template.bib
  : %  editor =  {J. Shrager and P. Langley},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "KoedNath2008"
+Warning--I didn't find a database entry for "NathKoed2004"
 apacite.bst [2012/02/25 v6.01 APA bibliography style]
 You've used 2 entries,
             6735 wiz_defined-function locations,
-            1251 strings with 10650 characters,
+            1255 strings with 10698 characters,
 and the built_in function-call counts, 3590 in all, are:
 = -- 449
 > -- 24
