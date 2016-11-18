@@ -1,21 +1,6 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
-\APACciteatitle {KoedNath2008}}{%
-\APACciteatitle {KoedNath2008}}{%
-{\protect \APACyear {{\protect \bibnodate {}}}}%
-}]{%
-KoedNath2008}
-\APACinsertmetastar {%
-KoedNath2008}%
-
-\newblock
-\APACrefYearMonthDay{{\protect \bibnodate {}}}{}{}.
-\newblock
-
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
 Goodman%
 \ \BBA {} Stuhlm\"{u}ller%
 }{%
