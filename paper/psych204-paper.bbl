@@ -1,6 +1,63 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+Khng%
+\ \BBA {} Lee%
+}{%
+Khng%
+\ \BBA {} Lee%
+}{%
+{\protect \APACyear {2009}}%
+}]{%
+Singapore}
+\APACinsertmetastar {%
+Singapore}%
+\begin{APACrefauthors}%
+Khng, K\BPBI H.%
+\BCBT {}\ \BBA {} Lee, K.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2009}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Inhibiting interference from prior knowledge: Arithmetic
+  intrusions in algebra word problem solving} {Inhibiting interference from
+  prior knowledge: Arithmetic intrusions in algebra word problem
+  solving}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Learning and Individual Differences}{19}{2}{262--268}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Koedinger%
+, Alibali%
+\BCBL {}\ \BBA {} Nathan%
+}{%
+Koedinger%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2008}}%
+}]{%
+KoedNath2008}
+\APACinsertmetastar {%
+KoedNath2008}%
+\begin{APACrefauthors}%
+Koedinger, K\BPBI R.%
+, Alibali, M\BPBI W.%
+\BCBL {}\ \BBA {} Nathan, M\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Trade-Offs Between Grounded and Abstract
+  Representations: Evidence From Algebra Problem Solving} {Trade-offs between
+  grounded and abstract representations: Evidence from algebra problem
+  solving}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Cognitive Science}{32}{}{}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Koedinger%
 \ \BBA {} Nathan%
 }{%
@@ -48,6 +105,30 @@ Nathan, M\BPBI J.%
   formalisms in formal education}.{\BBCQ}
 \newblock
 \APACjournalVolNumPages{Educational Psychologist}{47}{}{125--148}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Siegler%
+}{%
+Siegler%
+}{%
+{\protect \APACyear {1987}}%
+}]{%
+Siegler}
+\APACinsertmetastar {%
+Siegler}%
+\begin{APACrefauthors}%
+Siegler, R\BPBI S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1987}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Some General Conclusions about Children's Strategy
+  Choice Procedures} {Some general conclusions about children's strategy choice
+  procedures}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{International Journal of Psychology}{22}{}{729--749}.
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}
