@@ -1,6 +1,35 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+Goodman%
+\ \BBA {} Stuhlm\"{u}ller%
+}{%
+Goodman%
+\ \BBA {} Stuhlm\"{u}ller%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+dippl}
+\APACinsertmetastar {%
+dippl}%
+\begin{APACrefauthors}%
+Goodman, N\BPBI D.%
+\BCBT {}\ \BBA {} Stuhlm\"{u}ller, A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+\APACrefbtitle {{The Design and Implementation of Probabilistic Programming
+  Languages}.} {{The Design and Implementation of Probabilistic Programming
+  Languages}.}
+\newblock
+\APAChowpublished {\url{http://dippl.org}}.
+\newblock
+\APACrefnote{Accessed: 2016-11-17}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Khng%
 \ \BBA {} Lee%
 }{%
@@ -37,9 +66,9 @@ Koedinger%
 \ \protect \BOthers {.}}{%
 {\protect \APACyear {2008}}%
 }]{%
-KoedNath2008}
+2008}
 \APACinsertmetastar {%
-KoedNath2008}%
+2008}%
 \begin{APACrefauthors}%
 Koedinger, K\BPBI R.%
 , Alibali, M\BPBI W.%
@@ -85,9 +114,37 @@ Koedinger, K\BPBI R.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
-Nathan%
+M.~Nathan%
+\ \BBA {} Koedinger%
 }{%
-Nathan%
+M.~Nathan%
+\ \BBA {} Koedinger%
+}{%
+{\protect \APACyear {2000}}%
+}]{%
+KoedNath2000}
+\APACinsertmetastar {%
+KoedNath2000}%
+\begin{APACrefauthors}%
+Nathan, M.%
+\BCBT {}\ \BBA {} Koedinger, K\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2000}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Teachers' and researchers' beliefs about the development
+  of algebraic reasoning} {Teachers' and researchers' beliefs about the
+  development of algebraic reasoning}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal for Research in Mathematics
+  Education}{31}{}{168--190}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+M\BPBI J.~Nathan%
+}{%
+M\BPBI J.~Nathan%
 }{%
 {\protect \APACyear {2012}}%
 }]{%
@@ -114,9 +171,9 @@ Siegler%
 }{%
 {\protect \APACyear {1987}}%
 }]{%
-Siegler}
+Sieg1987}
 \APACinsertmetastar {%
-Siegler}%
+Sieg1987}%
 \begin{APACrefauthors}%
 Siegler, R\BPBI S.%
 \end{APACrefauthors}%
@@ -124,8 +181,8 @@ Siegler, R\BPBI S.%
 \newblock
 \APACrefYearMonthDay{1987}{}{}.
 \newblock
-{\BBOQ}\APACrefatitle {Some General Conclusions about Children's Strategy
-  Choice Procedures} {Some general conclusions about children's strategy choice
+{\BBOQ}\APACrefatitle {Some general conclusions about children's strategy
+  choice procedures} {Some general conclusions about children's strategy choice
   procedures}.{\BBCQ}
 \newblock
 \APACjournalVolNumPages{International Journal of Psychology}{22}{}{729--749}.
