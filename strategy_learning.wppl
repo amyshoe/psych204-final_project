@@ -1,304 +1,172 @@
-// var eq2procedure = function(problem){
-//     //blue success
-// }
 
-// var story2procedure = function(problem){
-//     // if problem.num_refs == 1: green success
-//     // if problem.num_refs == 2: red success
-// }
 globalStore.time_elapsed = 0
 var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
 
-var unwind = function(problem){ ////////////////////////////// /// UNWIND ///
-            // NOTE: THIS SECTION USED TO BE USING FIND() TO GET THE IDX OF OPS (VERBAL OR SYMBOL)
-            //          BUT IT SEEMED TO NOT BEHAVE NICELY WITH SLICE(). SO NOW THIS ONLY WORKS
-            //          FOR X*A+B=C EQUATIONS.
-            // TODO: MAKE MORE GENERAL/FLEXIBLE
-            if (problem.verbal) {
-                if (flip(.9)) {
-                    //do the correct reverse order op (first look for 'total/is' then 'and', then 'per/each')
-                    var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1];
-                    increment_time(1)
-                    if (globalStore.time_elapsed < 30) {
-                       return answer;
-                    } else {return null;}
-                } else { //PEMDAS error
-                    var answer = (problem.inputs[3]/problem.inputs[1]) - problem.inputs[2]
-                    increment_time(1)
-                    if (globalStore.time_elapsed < 30) {
-                       return answer;
-                    } else {return null;}
-                }
-            } else { // eq problem
-                if (flip(.4)) {
-                    //do the correct reverse order op (first look for '=' then '+', then '*')
-                    var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1]
-                    increment_time(1)
-                    if (globalStore.time_elapsed < 30) {
-                       return answer;
-                    } else {return null;}
-                } else { //PEMDAS error
-                    var answer = (problem.inputs[3] / problem.inputs[1])- problem.inputs[2]
-                    increment_time(1)
-                    if (globalStore.time_elapsed < 30) {
-                       return answer;
-                    } else {return null;}
-                }
-            }
+
+var unwind = function(problem){ 
+  if (problem.verbal) {
+    if (flip(.7)) {
+      //do the correct reverse order op (first look for 'total/is' then 'and', then 'per/each')
+      var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1];
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) {
+        return answer;
+      } else {return null;}
+    } else { //PEMDAS error
+      var answer = (problem.inputs[3]/problem.inputs[1]) - problem.inputs[2]
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) {
+        return answer;
+      } else {return null;}
+    }
+  } else { // eq problem
+    if (flip(.5)) {
+      //do the correct reverse order op (first look for '=' then '+', then '*')
+      var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1]
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) {
+        return answer;
+      } else {return null;}
+    } else { //PEMDAS error
+      var answer = (problem.inputs[3] / problem.inputs[1])- problem.inputs[2]
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) {
+        return answer;
+      } else {return null;}
+    }
+  }
 }
 
-var guess_check = function(problem) { /////////////////// /// GUESS AND CHECK ///
-            // guess and check helper function
-            var make_guess = function(lower, upper) {
-                var guess = uniformDraw(_.range(lower,upper))
-                var plugged_in = guess * problem.inputs[1] + problem.inputs[2]
-                if (plugged_in < problem.inputs[3]) { // guess was too small
-                    increment_time(2)
-                    if (globalStore.time_elapsed < 30) {
-                        return make_guess(guess + 1, guess + 10)
-                    } else {return null}
-                } else if (plugged_in > problem.inputs[3]) { // guess was too large
-                    increment_time(2)
-                    if (globalStore.time_elapsed < 30) {
-                        return make_guess(guess - 10, guess - 1)
-                    } else {return null}
-                } else { // guess was correct
-                    return guess
-                }
-            }
-            var lower = 1
-            var upper = 11
-            return make_guess(lower, upper)
+
+var guess_check = function(problem) {
+  // guess and check helper function
+  var make_guess = function(lower, upper) {
+    var guess = uniformDraw(_.range(lower,upper))
+    var plugged_in = guess * problem.inputs[1] + problem.inputs[2]
+    if (plugged_in < problem.inputs[3]) { // guess was too small
+      increment_time(2)
+      if (globalStore.time_elapsed < 30) {
+        return make_guess(guess + 1, guess + 10)
+      } else {return null}
+    } else if (plugged_in > problem.inputs[3]) { // guess was too large
+      increment_time(2)
+      if (globalStore.time_elapsed < 30) {
+        return make_guess(guess - 10, guess - 1)
+      } else {return null}
+    } else { // guess was correct
+      return guess
+    }
+  }
+  var lower = 1
+  var upper = 11
+  return make_guess(lower, upper)
 }
 
-var sym_manip = function(problem) {//////////////////////////////////////////////// /// SYMBOL MANIPULATION ///
-            // TODO: make this all more flexible...now it only works for x*a+b=c format
-            if (problem.ops.length == 1) { // base case
-                return Math.floor(problem.inputs.slice(-1))
-            }
-            // else, ops.length == 2 or 3
-            if (flip(.7) || problem.ops.length == 2) { //correct PEMDAS and op balancing
-                if (problem.ops.length == 2) { // of the form x*a=c or x+b=c
-                    var new_inputs = ['x']
-                    if ('+' in problem.ops) {
-                        new_inputs.push(problem.inputs[3] - problem.inputs[1]) // ['x', c-b]
-                    } else {
-                        new_inputs.push(problem.inputs[3] / problem.inputs[1]) // ['x', c/a]
-                    }
-                    var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['=']}
-                    increment_time(1)
-                    if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-                        return sym_manip(simplified_problem);
-                    } else {return null;}
-                } else { // of the form x*a+b=c
-                    var new_inputs = problem.inputs.slice(0,2) // ['x', a]
-                    new_inputs.push(problem.inputs[3] - problem.inputs[2]) // ['x', a, c-b]
-                    var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['*','=']}
-                    increment_time(1)
-//                     if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-//                         return getAnswer(simplified_problem, 'sym_manip');
-//                     } else {return null;}
-                    if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-                        return sym_manip(simplified_problem);
-                    } else {return null;}
-                }
-            } else if (problem.ops.length > 2) { // PEMDAS error -- can only happen with multiple ops
-                if(flip(0.8)) { // correct op balancing
-                    var new_inputs = ['x']
-                    new_inputs.push(problem.inputs[2]) // ['x', b]
-                    new_inputs.push(problem.inputs[3] / problem.inputs[1]) //['x', b, c/a]
-                    var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
-                    increment_time(1)
-                    if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-                        return sym_manip(simplified_problem);
-                    } else {return null;}
-                } else { // error in op balancing
-                    var new_inputs = ['x']
-                    new_inputs.push(problem.inputs[2] / problem.inputs[1]) //['x', b/a]
-                    new_inputs.push(problem.inputs[3]) //['x', b/a, c]
-                    var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
-                    increment_time(1)
-                    if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-                        return sym_manip(simplified_problem);
-                    } else {return null;}
-                }
-            }
+
+var sym_manip = function(problem) {
+  if (problem.ops.length == 1) { // base case
+    return Math.floor(problem.inputs.slice(-1))
+  }
+  // else, ops.length == 2 or 3
+  if (flip(.6) || problem.ops.length == 2) { //correct PEMDAS and op balancing
+    if (problem.ops.length == 2) { // of the form x*a=c or x+b=c
+      var new_inputs = ['x']
+      if ('+' in problem.ops) {
+        new_inputs.push(problem.inputs[3] - problem.inputs[1]) // ['x', c-b]
+      } else {
+        new_inputs.push(problem.inputs[3] / problem.inputs[1]) // ['x', c/a]
+      }
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['=']}
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+        return sym_manip(simplified_problem);
+      } else {return null;}
+    } else { // of the form x*a+b=c
+      var new_inputs = problem.inputs.slice(0,2) // ['x', a]
+      new_inputs.push(problem.inputs[3] - problem.inputs[2]) // ['x', a, c-b]
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['*','=']}
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+        return sym_manip(simplified_problem);
+      } else {return null;}
+    }
+  } else if (problem.ops.length > 2) { // PEMDAS error -- can only happen with multiple ops
+    if(flip(0.8)) { // correct op balancing
+      var new_inputs = ['x']
+      new_inputs.push(problem.inputs[2]) // ['x', b]
+      new_inputs.push(problem.inputs[3] / problem.inputs[1]) //['x', b, c/a]
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+        return sym_manip(simplified_problem);
+      } else {return null;}
+    } else { // error in op balancing
+      var new_inputs = ['x']
+      new_inputs.push(problem.inputs[2] / problem.inputs[1]) //['x', b/a]
+      new_inputs.push(problem.inputs[3]) //['x', b/a, c]
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
+      increment_time(1)
+      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+        return sym_manip(simplified_problem);
+      } else {return null;}
+    }
+  }
+}
+
+var story2eq = function(problem){
+  if(flip(0.9)) { // correct translation
+    var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
+    increment_time(2)
+    return modified_problem
+  } else { // switched a and b --> x*b + a = c
+    var new_inputs = ['x']
+    new_inputs.push(problem.inputs[2])
+    new_inputs.push(problem.inputs[1])
+    new_inputs.push(problem.inputs[3])
+    var modified_problem = {verbal: true, inputs: new_inputs, ops: ['*', '+', '=']}
+    increment_time(2)
+    return modified_problem
+  }
+}
+    
+
+var getAnswer = function(problem, strategy) {
+    // Do any necessary conversions 
+    if (problem.verbal && strategy == 'sym_manip') {var problem = story2eq(problem)}
+    // Solve the problem with the given strategy!
+    if (strategy == "unwind") { 
+      return unwind(problem)
+    } else if (strategy == "sym_manip") { 
+      return sym_manip(problem)
+    } else { 
+      return guess_check(problem) 
+    }
 }
 
 var model = function() {
-
     // Data
-//     var problem1 = {verbal: true, inputs: ['x', 6, 66, 84], ops: ['per', 'and', 'total']}
+    var problem1 = {verbal: true, inputs: ['x', 6, 66, 84], ops: ['per', 'and', 'total']}
     var problem2 = {verbal: false, inputs: ['x', 6, 66, 84], ops: ['*', '+', '=']}
-//     var problem3 = {verbal: true, inputs: ['x', 3, 64, 133], ops: ['each', 'and', 'is']}
+    var problem3 = {verbal: true, inputs: ['x', 3, 64, 133], ops: ['each', 'and', 'is']}
     var problem4 = {verbal: false, inputs: ['x', 3, 64, 133], ops: ['*', '+', '=']}
-//     var observedData = [problem1, problem2, problem3, problem4]
-    var observedData = [problem2, problem4]
-    var trueAnswers = [3, 23]
-//     var trueAnswers = [3, 3, 23, 23]
-    var indices = [0,1,2,3] // range(observedData.length)
+    var problem5 = {verbal: true, inputs: ['x', 5, 22, 47], ops: ['each', 'and', 'is']}
+    var problem6 = {verbal: false, inputs: ['x', 5, 22, 47], ops: ['*', '+', '=']}
+    var observedData = [problem1, problem2, problem3, problem4, problem5, problem6]
+    var trueAnswers = [3, 3, 23, 23, 5, 5]
+//     var observedData = [problem2, problem4]
+//     var trueAnswers = [3, 23]
+    var indices = [0,1,2,3,4,5] // range(observedData.length)
     var strategies = ['unwind', 'guess_check', 'sym_manip']
     // prior for which strategy: unwind/untangle, guess n check, symbolic manip
     //var stratPrior = T.toScalars(dirichlet(ones([strategies.length, 1])))
-    var eqStratPrior = T.toScalars(dirichlet(Vector([1,2,4])));
-    var storyStratPrior = T.toScalars(dirichlet(Vector([4,2,1])))
+    var eqStratPrior = T.toScalars(dirichlet(Vector([1,1,5])));
+    var storyStratPrior = T.toScalars(dirichlet(Vector([3,1,1])))
     var chooseStrategies = function(problem){
         if (problem.verbal){
            return sample(Categorical({ps: storyStratPrior, vs: strategies}));
         } else {
           return sample(Categorical({ps: eqStratPrior, vs: strategies}));
         }
-    }
-    
-    var story2eq = function(problem){
-      // TODO : fix this, since mutating arrays is not allowed in webppl (even in globalStore)
-      //            without hacky hardcode ways that don't allow for problem flexibility
-
-      // problem.ops.slice(1+find(function(x){return (x == 'is') || (x == 'total');}, problem.ops)) = '='
-      // problem.ops.slice(1+find(function(x){return (x == 'and');}, problem.ops)) = '+'
-      // problem.inputs.slice(1+find(function(x){return (x == 'per') || (x == 'each');}, problem.ops)) = '*'
-      if(flip(0.9)) { // correct translation
-        var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
-        increment_time(3)
-        return modified_problem
-      } else { // switched a and b --> x*b + a = c
-        var new_inputs = ['x']
-        new_inputs.push(problem.inputs[2])
-        new_inputs.push(problem.inputs[1])
-        new_inputs.push(problem.inputs[3])
-        var modified_problem = {verbal: true, inputs: new_inputs, ops: ['*', '+', '=']}
-        increment_time(3)
-        return modified_problem
-      }
-    }
-    
-    // MAIN PART OF THE MODEL
-    var getAnswer = function(problem, strategy) {
-        // DO ANY NECESSARY CONVERSIONS 
-        // NOTE: I THINK ONLY STORY2EQ SHOULD BE HERE.
-        // if (problem.verbal) { // story problem
-        //  strategy == 'sym_manip' ? story2eq(problem) : story2procedure(problem)
-        // }
-        // else { // equation problem 
-        //  if (strategy != 'sym_manip') {eq2procedure(problem)}
-        // }
-        if (problem.verbal && strategy == 'sym_manip') {var problem = story2eq(problem)}
-        
-        if (strategy == "unwind") return unwind(problem)
-        else if (strategy == "sym_manip") return sym_manip(problem)
-        else return guess_check(problem)
-        // SOLVE THE PROBLEM
-//         if (strategy == 'unwind') { ////////////////////////////// /// UNWIND ///
-//             // NOTE: THIS SECTION USED TO BE USING FIND() TO GET THE IDX OF OPS (VERBAL OR SYMBOL)
-//             //          BUT IT SEEMED TO NOT BEHAVE NICELY WITH SLICE(). SO NOW THIS ONLY WORKS
-//             //          FOR X*A+B=C EQUATIONS.
-//             // TODO: MAKE MORE GENERAL/FLEXIBLE
-//             if (problem.verbal) {
-//                 if (flip(.9)) {
-//                     //do the correct reverse order op (first look for 'total/is' then 'and', then 'per/each')
-//                     var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1];
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) {
-//                        return answer;
-//                     } else {return null;}
-//                 } else { //PEMDAS error
-//                     var answer = (problem.inputs[3]/problem.inputs[1]) - problem.inputs[2]
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) {
-//                        return answer;
-//                     } else {return null;}
-//                 }
-//             } else { // eq problem
-//                 if (flip(.4)) {
-//                     //do the correct reverse order op (first look for '=' then '+', then '*')
-//                     var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1]
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) {
-//                        return answer;
-//                     } else {return null;}
-//                 } else { //PEMDAS error
-//                     var answer = (problem.inputs[3] / problem.inputs[1])- problem.inputs[2]
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) {
-//                        return answer;
-//                     } else {return null;}
-//                 }
-//             }
-//         } 
-
-//         else if (strategy == 'guess_check') { /////////////////// /// GUESS AND CHECK ///
-//             // guess and check helper function
-//             var make_guess = function(lower, upper) {
-//                 var guess = uniformDraw(_.range(lower,upper))
-//                 var plugged_in = guess * problem.inputs[1] + problem.inputs[2]
-//                 if (plugged_in < problem.inputs[3]) { // guess was too small
-//                     increment_time(2)
-//                     if (globalStore.time_elapsed < 30) {
-//                         return make_guess(guess + 1, guess + 10)
-//                     } else {return null}
-//                 } else if (plugged_in > problem.inputs[3]) { // guess was too large
-//                     increment_time(2)
-//                     if (globalStore.time_elapsed < 30) {
-//                         return make_guess(guess - 10, guess - 1)
-//                     } else {return null}
-//                 } else { // guess was correct
-//                     return guess
-//                 }
-//             }
-//             var lower = 1
-//             var upper = 11
-//             return make_guess(lower, upper)
-
-//         } else { //////////////////////////////////////////////// /// SYMBOL MANIPULATION ///
-//             // TODO: make this all more flexible...now it only works for x*a+b=c format
-//             if (problem.ops.length == 1) { // base case
-//                 return Math.floor(problem.inputs.slice(-1))
-//             }
-//             // else, ops.length == 2 or 3
-//             if (flip(.7) || problem.ops.length == 2) { //correct PEMDAS and op balancing
-//                 if (problem.ops.length == 2) { // of the form x*a=c or x+b=c
-//                     var new_inputs = ['x']
-//                     if ('+' in problem.ops) {
-//                         new_inputs.push(problem.inputs[3] - problem.inputs[1]) // ['x', c-b]
-//                     } else {
-//                         new_inputs.push(problem.inputs[3] / problem.inputs[1]) // ['x', c/a]
-//                     }
-//                     var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['=']}
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-//                         return getAnswer(simplified_problem, 'sym_manip');
-//                     } else {return null;}
-//                 } else { // of the form x*a+b=c
-//                     var new_inputs = problem.inputs.slice(0,2) // ['x', a]
-//                     new_inputs.push(problem.inputs[3] - problem.inputs[2]) // ['x', a, c-b]
-//                     var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['*','=']}
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-//                         return getAnswer(simplified_problem, 'sym_manip');
-//                     } else {return null;}
-//                 }
-//             } else if (problem.ops.length > 2) { // PEMDAS error -- can only happen with multiple ops
-//                 if(flip(0.8)) { // correct op balancing
-//                     var new_inputs = ['x']
-//                     new_inputs.push(problem.inputs[2]) // ['x', b]
-//                     new_inputs.push(problem.inputs[3] / problem.inputs[1]) //['x', b, c/a]
-//                     var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-//                         return getAnswer(simplified_problem, 'sym_manip');
-//                     } else {return null;}
-//                 } else { // error in op balancing
-//                     var new_inputs = ['x']
-//                     new_inputs.push(problem.inputs[2] / problem.inputs[1]) //['x', b/a]
-//                     new_inputs.push(problem.inputs[3]) //['x', b/a, c]
-//                     var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
-//                     increment_time(1)
-//                     if (globalStore.time_elapsed < 30) { // if time allows, recurse!
-//                         return getAnswer(simplified_problem, 'sym_manip');
-//                     } else {return null;}
-//                 }
-//             }
-//         }
     }
 
     // get answers, and condition on those answers being true
@@ -308,21 +176,19 @@ var model = function() {
     var obsFn = function(idx) {condition(myAnswers[idx] == trueAnswers[idx])}
     mapData({data: indices}, obsFn)
   
-//     var eqStrats = _.union(myStrategies.slice(0,1), myStrategies.slice(2,3))
-//     var eqStrats = myStrategies.slice(3,4)
-//     var storyStrats = _.union(myStrategies.slice(1,2), myStrategies.slice(3,4))
-//     var storyStrats = myStrategies.slice(2,3)
-//     return eqStrats
-    return {answers: myAnswers, 
-            guessCheckProb: eqStratPrior[0]}
+    return {EQunwindProb: eqStratPrior[0],
+            EQguessProb: eqStratPrior[1],
+            EQsymManipProb: eqStratPrior[2],
+            STORYunwindProb: storyStratPrior[0],
+            STORYguessCheckProb: storyStratPrior[1],
+            STORYsymManipProb: storyStratPrior[2]}
 //     return {eq_strategies: eqStrats}
 //     return {story_strategies: storyStrats}    
 }
 
-var d = Infer({method: 'MCMC', samples: 10000}, model)
-// var d = Infer({method: 'rejection', samples: 1000}, model)
-viz.marginals(d)
 
-//THING1:  DECOMPOSITION
+var d = Infer({method: 'MCMC', samples: 10000}, model)
+viz.marginals(d, {xLabel: "Probability of Strategy Being Used"})
+
 //THING2:  POSTERIOR PREDICTIVES (NEW DATA)
 //THING3:  TRY DIFFERENT PRIORS FOR DIFFERENT PROBLEMS
