@@ -24,215 +24,205 @@
 \usepackage{pslatex}
 \usepackage{apacite}
 \usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
 
 \newcommand\TODO[1]{\textcolor{red}{#1}}
 \title{On Symbols and Stories:\\Learning Strategies for Solving Different Representations of Algebra Problems}
- 
+
 \author{{\large \bf Luis Apolaya (lapolaya@stanford.edu)} \\
-  Department of Symbolic Systems, Stanford University
-  \AND {\large \bf Amy Shoemaker (amyshoe@stanford.edu)} \\
-  Institute for Computational and Mathematical Engineering, Stanford University}
+	Department of Symbolic Systems, Stanford University
+	\AND {\large \bf Amy Shoemaker (amyshoe@stanford.edu)} \\
+	Institute for Computational and Mathematical Engineering, Stanford University}
 
 
 \begin{document}
-
-\maketitle
-
-
-%\begin{abstract}
-%\TODO{write abstract}
-%The abstract should be one paragraph, indented 1/8~inch on both sides,
-%in 9~point font with single spacing. The heading ``{\bf Abstract}''
-%should be 10~point, bold, centered, with one line of space below
-%it. This one-paragraph abstract section is required only for standard
-%six page proceedings papers. Following the abstract should be a blank
-%line, followed by the header ``{\bf Keywords:}'' and a list of
-%descriptive keywords separated by semicolons, all in 9~point font, as
-%shown below.
-%
-%\textbf{Keywords:} 
-%Mathematics Education; Mathematical Cognition; Algebra; Problem-Solving; Probabilistic Models
-%\end{abstract}
-
-
-\section{Introduction}
-
-When considering the teaching of algebra, one of students' first transitions from concrete, arithmetic thinking to more abstract concepts, there is a general notion about which problems are better to teach first to build understanding. For example, consider the following two algebra problems, which are identical in terms of content:
-
-\begin{enumerate}
-\item[(A)] Solve for $x$:\\ $x * 6 + 66 = 81.9$
-
-\item[(B)] When Ted got home from his waiter job, he multiplied his hourly wage by the 6 hours he worked that day. Then he added the \$66.00 he made in tips and found he had earned \$81.90. How much does Ted make per hour?
-\end{enumerate}
-
-Though questions (A) and (B) give and ask for the same information, much can be said about how the presentations of these two problems affect how students and teachers gauge their respective difficulty level, and therefore how likely they are to reach the correct answer. When asked which format best facilitates acquisition of algebraic concepts, for example, teachers agree that problem (A) does so better than problem (B), claiming that symbolic problems are inherently easier and therefore ought to be taught first in an introductory algebra class \cite{KoedNath2000}. However, \citeA{KoedNath2004} conducted a study that revealed situations where story problems are actually \textit{easier} than symbolic problems. 
-
-Through the use of probabilistic programming, we seek to understand the cognitive mechanisms that bring forth the patterns \citeA{KoedNath2004} noticed. We thus hope to shed further light onto the psychology of algebra students and onto how pedagogical methods can better attend to students' development as problem solvers.
-
-\subsection{Story Problems and the Verbal Hypothesis}
-
-There are several reasons why mathematics teachers widely believe that symbolic representations of algebra problems are inherently easier than story problems. For one, symbolic problems are comprised of more easily manipulable components than their verbal counterparts, as all the relevant parts of the problem are present in the symbols and students do not have to identify the key parts of the problem from within a story context \cite{KoedNath2004}. On the other hand, verbal problems can ground the scenario in a more relatable, real-life manner, which may heighten students’ intuitions or provide insight into informal problem-solving strategies they can use. Though surveys cited in \cite{Nathan2012} show that teachers think symbolic problems are likely to be solved correctly, \citeA{KoedNath2004} show a disparity in the teachers' beliefs and students' performance, as subjects in their study show a higher rate of success for verbal problems.
-
-In explaining this phenomenon, \citeA{KoedNath2004} propose what they call the \textit{verbal hypothesis}, which states that the earlier acquisition of language gives students an advantage on comprehending and solving story problems over symbolic problems. That is, since the symbols in an algebraic equation must be understood and manipulated to reach and communicate an answer, working with equations has its own risks of comprehension error, just as story problems do. In effect, the authors reduce the role a problem's format can have in students' comprehension mistakes to the affects formats have on students' choice of problem-solving strategies, which ends up being the crucial factor in predicting students' success in solving the problem.
-
-Breaking this observation down further, \citeA{KoedNath2004} identify three main strategies, each with a differing success rate: \textit{symbolic manipulation}, \textit{unwind}, and \textit{guess and check}. The first, as the name suggests, is the formal method of manipulating algebraic symbols to determine the unknown value. The second strategy involves working backwards from a problem's result value to arrive at the desired unknown value through a series of computations, reversing the computations in the problem, though not necessarily with any symbolic notation. Finally, the third strategy involves looking for the unknown by trying out different values and seeing whether the given equation makes sense, also not necessarily involving an equation. To distinguish the strategies that require algebraic notation from those that do not, the authors marked symbolic manipulation as a formal strategy, and unwind and guess and check as informal strategies. In the scope of their study, Nathan and Koedinger noticed that the informal strategies have greater rates of success (69\% for unwind and 71\% for guess and check) than symbolic manipulation (51\%). Moreover, story problems were more frequently solved with the success-prone informal strategies than symbolic manipulation (see Table \ref{strategies_employed}). 
-\begin{table}[!ht]
-\begin{center} 
-\caption{Solution Strategies Employed by Solvers as a Function of Problem Representation \cite{KoedNath2004}\\ \textbf{Key:} PR=Problem Representation, U=Unwind, GT=Guess and Test, NR=No Response} 
-\label{strategies_employed} 
-\vskip 0.12in
-\begin{tabular}{llllll} 
-\hline
-PR    &  \textit{U} & \textit{GT} & \textit{SM} & NR & Other \\
-\hline
-Story        &   \textbf{50} & 7 & 5 & 12 & 26\\
-Equation   &   13 & 14 & \textbf{22} & \textbf{32} & 19 \\
-\hline
-\end{tabular} 
-\end{center} 
-\end{table}
-
-\citeA{KoedNath2004} draw a correlation between the strategies used to solve story problems and their findings that students have higher rates of success with story problems. Doing away with conventional belief that some types of problem representation are inherently easier than others, they instead propose that the representation of a problem affects a student's informal, conceptual understanding and thus the strategies they use. The fact that no response was given for 32\% of equation problems (which is almost three times the rate of no responses in story problems, see Table \ref{strategies_employed}) further supports their verbal hypothesis for beginning algebra students.
-
-\subsection{Single- versus Double-Reference Algebra Problems}
-
-Though Nathan and Koedinger were able to identify one set of circumstances where students' performance in story problems surpassed teachers' expectations, this is not enough to invalidate such a widespread belief among students and teachers of algebra. Rather, these findings motivated the authors to follow up on their own study by tracking students' use of strategies and performance on more difficult algebra problems. \citeA{2008}  introduce the notion of single-reference and double-reference problems. Single-reference problems, like problems (A) and (B) above, make reference to the unknown value only once, whereas double-reference problems, like problems (C) and (D) below, refer to the unknown value twice.
-
-Though Nathan and Koedinger were able to identify one set of circumstances where students' performance in story problems surpassed teachers' expectations, this is not enough to invalidate such a widespread belief among students and teachers of algebra. Rather, these findings motivated the authors to follow up on their own study by tracking students' use of strategies and performance on more difficult algebra problems. \citeA{2008} introduce the notion of single-reference and double-reference problems. Single-reference problems, like problems (A) and (B) above, make reference to the unknown value only once, whereas double-reference problems, like problems (C) and (D) below, refer to the unknown value twice.
-
-\begin{enumerate}
-	\item[(C)] Roseanne just paid \$38.24 for new jeans. She got them at a 15\% discount. What was the original price?
 	
-	\item[(D)] Solve for $x$:\\$x - 0.15x = 38.24$
-\end{enumerate}
-
-After giving students exams with both single-reference and double-reference algebra problems, they were able to replicate their results from \cite{KoedNath2004}, for single-reference problems and found opposite performance rates for double-reference problems. As it turns out, the double-reference problems \citeA{2008} tested are more likely to be solved correctly in equation representation than in story representation. 
-
-More specifically, and keeping the dichotomy of formal and informal strategies from \citeA{KoedNath2004}, the authors noticed a pattern emerge in the students' choice of strategies and their respective success rates in relation to the representation of the algebra problem. When faced with a single-reference story problem, students were more likely to choose and more successful when choosing an informal strategy over a formal strategy, whereas the opposite was true for single-reference symbolic problems. In the case of double-reference story problems, however, formal strategies were chosen more often and led to more correct answers than informal strategies, as was the case for double-reference symbolic problems. 
-
-To explain this, \citeA{2008} propose that informal methods are taxing on working memory when solving double-reference story problems, which makes students prefer and work better with symbolic representations, as all the information needed is concisely contained in an algebraic equation. Moreover, they identify benefits to the \textit{grounded representation} of story problems, such as easier access to problem-solving methods students use in real-life, and a context that facilitates error-checking (if the story mentions dollars and cents, for example, common knowledge about what their labels represent makes it difficult to accidentally add them under the same label of dollars or cents). Though the authors acknowledge that translation from a story problem to an equation has its difficulties and cognitive demands, they do not posit that translation tells the whole story, and rather predict that single-reference story problems are best solved with informal strategies, and double-reference story problems are best solved with formal strategies, despite any translation that needs to take place.
-
-\section{The Model}
-
-\subsection{Learning to Choose a Strategy}
-While \citeA{KoedNath2004} show that the difference in success students have with story problems versus equation problems is largely due to the strategies most common for each type of problem and the success rates of those strategies, they provide no discussion of how students choose what strategy to use for a given problem. One such explanation can be found in work done by \citeA{Sieg1987}, which presents a developmental theory of how children and youths learn to solve unfamiliar problems by choosing among a small number of strategies. \TODO{a bit more here, maybe}
-
-Using the probabilistic language WebPPL (\cite{dippl}), we created a model that attempts to synthesize the work of \citeA{NathKoed2004}, \citeA{NathKoed2008}, and \citeA{Sieg1987} to explore the psychology of strategy choices that math students go through when learning to solve single-reference story and symbolic problems. To do so, we drew on the demonstrated preference of strategies that \citeA{NathKoed2008} uncovered and the notion of problem type-strategy correspondence from the work of (\textbf{Singapore}) to come up with a predictive model (\textbf{include a figure with our theoretical framework?}). The aim of our model was to replicate the rates of successes of the three main strategies from \citeA{NathKoed2004}, which would not only support Nathan and Koedinger's theories on single-reference story and symbolic problems, but also mark our success in demonstrating how students make these choices.
-
-Using the probabilistic language WebPPL ({Goodman and Tenenbaum}), we have created a model attempts to synthesize the work of \citeA{KoedNath2004} and provide a hypothesis of the cognitive pathways that have led to their findings. %(\textbf{Nathan Koedinger 2008}), and (\textbf{Singapore}) 
-While \citeA{KoedNath2004} show that the difference in success students have with story problems versus equation problems is largely due to the strategies most common for each type of problem and the success rates of those strategies, they provide no discussion of how students choose what strategy to use for a given problem. One such explanation can be found in \cite{Siegler}, which presents a developmental theory of how children and youths learn to solve unfamiliar problems by choosing among a small number of strategies. \TODO{a bit more here, maybe}
-
-In our model, we explore the psychology of strategy choices that math students go through when learning to solve single-reference story and symbolic problems. To do so, we drew on the demonstrated preference of strategies that \citeA{KoedNath2008} uncovered and the notion of core problem type-strategy correspondence from the work of \citeA{Singapore}. (\TODO{include a figure with our theoretical framework?}). The aim of our model was to replicate the rates of successes of the three main strategies from \cite{KoedNath2004}, which would not only support their theories on single-reference story and symbolic problems, but also mark our success in demonstrating how students make these choices.
-
-\subsection{Current Methods}
-
-Second level headings should be 11~point, initial caps, bold, and
-flush left. Leave one line space above the heading and 1/4~line
-space below the heading.
-\subsection{Future Methods}
-
-\section{Preliminary Results}
-
-Result synopsis
-
-Third level headings should be 10~point, initial caps, bold, and flush
-left. Leave one line space above the heading, but no space after the
-heading.
-
-
-\section{Discussion}
-
-\subsection{Arithmetic Interference on Algebra}
-
-The findings of (\textbf{citation}) suggest such an explanation that appeals to a phenomenon suggested by (\textbf{citation of number sense}) set in the problem solving realm: interference of prior knowledge. In this study, the authors introduce a hiccup in the acquisition of algebraic problem-solving methods such as symbol manipulation, namely the naive implementation of arithmetic strategies such as unwind and guess and check to algebra problems. That is, in the process of learning which strategies to use for certain problems (\textbf{citation referring to this process of choosing optimal strategies}), students who were able to inhibit interference from prior arithmetic knowledge in a number of different metrics were more likely to solve the given algebraic problems correctly.
-
-This work suggests a correspondence between algebraic strategies with problems that are purely algebraic in nature, and arithmetic strategies with problems that can be arithmetic in nature.
-
-
-Use standard APA citation format. Citations within the text should
-include the author's last name and year. If the authors' names are
-included in the sentence, place only the year in parentheses, as in
-\citeA{Nathan2012}, but otherwise place the entire reference in
-parentheses with the authors and year separated by a comma
-\citeA{Nathan2012}. List multiple references alphabetically and
-separate them by semicolons
-\citeA{Nathan2012,KoedNath2004}. Use the
-``et~al.'' construction only after listing all the authors to a
-publication in an earlier reference and for citations with four or
-more authors.
-
-Indicate footnotes with a number\footnote{Sample of the first
-footnote.} in the text. Place the footnotes in 9~point type at the
-bottom of the column on which they appear. Precede the footnote block
-with a horizontal rule.\footnote{Sample of the second footnote.}
-
-Number tables consecutively. Place the table number and title (in
-10~point) above the table with one line space above the caption and
-one line space below it, as in Table~\ref{sample-table}. You may float
-tables to the top or bottom of a column, or set wide tables across
-both columns.
-
-\begin{table}[!ht]
-\begin{center} 
-\caption{Sample table title.} 
-\label{sample-table} 
-\vskip 0.12in
-\begin{tabular}{ll} 
-\hline
-Error type    &  Example \\
-\hline
-Take smaller        &   63 - 44 = 21 \\
-Always borrow~~~~   &   96 - 42 = 34 \\
-0 - N = N           &   70 - 47 = 37 \\
-0 - N = 0           &   70 - 47 = 30 \\
-\hline
-\end{tabular} 
-\end{center} 
-\end{table}
-
-
-\subsection{Figures}
-
-All artwork must be very dark for purposes of reproduction and should
-not be hand drawn. Number figures sequentially, placing the figure
-number and caption, in 10~point, after the figure with one line space
-above the caption and one line space below it, as in
-Figure~\ref{sample-figure}. If necessary, leave extra white space at
-the bottom of the page to avoid splitting the figure and figure
-caption. You may float figures to the top or bottom of a column, or
-set wide figures across both columns.
-
-\begin{figure}[ht]
-\begin{center}
-\fbox{CoGNiTiVe ScIeNcE}
-\end{center}
-\caption{This is a figure.} 
-\label{sample-figure}
-\end{figure}
-
-
-\section{Acknowledgments}
-
-Place acknowledgments (including funding information) in a section at
-the end of the paper.
-
-
-%\nocite{ChalnickBillman1988a}
-%\nocite{Feigenbaum1963a}
-%\nocite{Hill1983a}
-%\nocite{OhlssonLangley1985a}
-% \nocite{Lewis1978a}
-%\nocite{Matlock2001}
-%\nocite{NewellSimon1972a}
-%\nocite{ShragerLangley1990a}
-
-
-\bibliographystyle{apacite}
-
-\setlength{\bibleftmargin}{.125in}
-\setlength{\bibindent}{-\bibleftmargin}
-
-\bibliography{CogSci_Template}
-
-
+	\maketitle
+	
+	
+	%\begin{abstract}
+	%\TODO{write abstract}
+	%The abstract should be one paragraph, indented 1/8~inch on both sides,
+	%in 9~point font with single spacing. The heading ``{\bf Abstract}''
+	%should be 10~point, bold, centered, with one line of space below
+	%it. This one-paragraph abstract section is required only for standard
+	%six page proceedings papers. Following the abstract should be a blank
+	%line, followed by the header ``{\bf Keywords:}'' and a list of
+	%descriptive keywords separated by semicolons, all in 9~point font, as
+	%shown below.
+	%
+	%\textbf{Keywords:} 
+	%Mathematics Education; Mathematical Cognition; Algebra; Problem-Solving; Probabilistic Models
+	%\end{abstract}
+	
+	
+	\section{Introduction}
+	
+	%\TODO{lead-in first sentence}
+	%\TODO{mention SOMEWHERE that we're just doing start uknown because result unkown is just arithmetic}
+	
+	Consider the following two algebra problems, which are identical in terms of content:
+	
+	\begin{enumerate}
+		\item[(A)] Solve for $x$:\\ $x * 6 + 66 = 84$
+		
+		\item[(B)] When Ted got home from his waiter job, he multiplied his hourly wage by the 6 hours he worked that day. Then he added the \$66.00 he made in tips and found he had earned \$84.00. How much does Ted make per hour?
+	\end{enumerate}
+	
+	Though questions (A) and (B) give and ask for the same information, much can be said about how the presentations of these two problems affect how students and teachers gauge their respective difficulty level, and therefore how likely they are to reach the correct answer. When asked which format best facilitates acquisition of algebraic concepts, for example, teachers agree that problem (A) does so better than problem (B), claiming that symbolic problems are inherently easier and therefore ought to be taught first in an introductory algebra class \cite{KoedNath2004,Nathan2012}. However, \citeA{KoedNath2004} conducted a study that revealed situations where story problems are actually \textit{easier} than symbolic problems. 
+	
+	Through the use of probabilistic programming, we seek to understand the cognitive mechanisms that bring forth the patterns \citeA{KoedNath2004} noticed. We hope to shed further light onto the psychology of algebra students and onto how pedagogical methods can better attend to students' development as problem solvers.
+	
+	
+	\subsection{Story Problems and the Verbal Hypothesis}
+	
+	There are several reasons why mathematics teachers widely believe that symbolic representations of algebra problems are inherently easier than story problems. For one, symbolic problems are comprised of more easily manipulable components than their verbal counterparts, as all the relevant parts of the problem are present in the symbols and students do not have to identify the key parts of the problem from within a story context \cite{KoedNath2004}. On the other hand, verbal problems can ground the scenario in a more relatable, real-life manner, which may heighten students’ intuitions or provide insight into informal problem-solving strategies they can use. Though surveys cited in \cite{Nathan2012} show that teachers think symbolic problems are likely to be solved correctly, \citeA{KoedNath2004} show a disparity in the teachers' beliefs and students' performance, as subjects in their study show a higher rate of success for verbal problems. They found that students had a 66\% success rate on story problems, but only a 43\% success rate on equation problems \cite{KoedNath2004}.
+	
+	In explaining this phenomenon, \citeA{KoedNath2004} propose what they call the \textit{verbal hypothesis}, which states that the earlier acquisition of language gives students an advantage on comprehending and solving story problems over symbolic problems. That is, since the symbols in an algebraic equation must be understood and manipulated to reach and communicate an answer, working with equations has its own risks of comprehension error, just as story problems do. In effect, the authors reduce the role a problem's format can have in students' comprehension mistakes to the affects formats have on students' choice of problem-solving strategies, which ends up being the crucial factor in predicting students' success in solving the problem.
+	
+	Breaking this observation down further, \citeA{KoedNath2004} identify three main strategies, each with a differing success rate: \textit{symbolic manipulation}, \textit{unwind}, and \textit{guess and check}. The first, as the name suggests, is the formal method of manipulating algebraic symbols to determine the unknown value. The second strategy involves working backwards from a problem's result value to arrive at the desired unknown value through a series of computations, reversing the computations in the problem, though not necessarily with any symbolic notation. Finally, the third strategy involves looking for the unknown by trying out different values and seeing whether the given equation makes sense, also not necessarily involving an equation. To distinguish the strategies that require algebraic notation from those that do not, the authors marked symbolic manipulation as a formal strategy, and unwind and guess and check as informal strategies. In the scope of their study, Nathan and Koedinger noticed that the informal strategies have greater rates of success (69\% for unwind and 71\% for guess and check) than symbolic manipulation (51\%). Moreover, story problems were more frequently solved with the success-prone informal strategies than symbolic manipulation (see Table \ref{strategies_employed}). 
+	\begin{table}[!ht]
+		\begin{center} 
+			\caption{Solution Strategies Employed by Solvers as a Function of Problem Representation \cite{KoedNath2004}\\ \textbf{Key:} PR=Problem Representation, U=Unwind, GT=Guess and Test, NR=No Response} 
+			\label{strategies_employed} 
+			\vskip 0.12in
+			\begin{tabular}{llllll} 
+				\hline
+				PR    &  \textit{U} & \textit{GT} & \textit{SM} & NR & Other \\
+				\hline
+				Story        &   \textbf{50} & 7 & 5 & 12 & 26\\
+				Equation   &   13 & 14 & \textbf{22} & \textbf{32} & 19 \\
+				\hline
+			\end{tabular} 
+		\end{center} 
+	\end{table}
+	
+	\citeA{KoedNath2004} draw a correlation between the strategies used to solve story problems and their findings that students have higher rates of success with story problems. Doing away with conventional belief that some types of problem representation are inherently easier than others, they instead propose that the representation of a problem affects a student's informal, conceptual understanding and thus the strategies they use. The fact that no response was given for 32\% of equation problems (which is almost three times the rate of no responses in story problems, see Table \ref{strategies_employed}) further supports their verbal hypothesis for beginning algebra students.
+	
+	
+	\subsection{Single- versus Double-Reference Algebra Problems}
+	
+	Though Nathan and Koedinger were able to identify one set of circumstances where students' performance in story problems surpassed teachers' expectations, this is not enough to invalidate such a widespread belief among students and teachers of algebra. Rather, these findings motivated the authors to follow up on their own study by tracking students' use of strategies and performance on more difficult algebra problems. \citeA{KoedNath2008} introduce the notion of single-reference and double-reference problems. Single-reference problems, like problems (A) and (B) above, make reference to the unknown value only once, whereas double-reference problems, like problems (C) and (D) below, refer to the unknown value twice.
+	
+	\begin{enumerate}
+		\item[(C)] You are in Paris, and you want to
+		exchange your dollars for Francs. The first exchange store gives you 5.7
+		Francs per dollar and charges you 22 Francs for the
+		exchange. The second exchange store gives
+		you 5.4 Francs per dollar but does not charge a
+		fee. When are the charges from the two
+		stores the same? In other words, what
+		amount of dollars results in the same charge
+		from both stores?
+		
+		\item[(D)] Solve for $x$:\\ $5.7x − 22 = 5.4x$
+	\end{enumerate}
+	
+	After giving students exams with both single-reference and double-reference algebra problems, they were able to replicate their results from \cite{KoedNath2004}, for single-reference problems and found opposite performance rates for double-reference problems. As it turns out, the double-reference problems \citeA{KoedNath2008} tested are more likely to be solved correctly in equation representation than in story representation. 
+	
+	More specifically, and keeping the dichotomy of formal and informal strategies from \citeA{KoedNath2004}, the authors noticed a pattern emerge in the students' choice of strategies and their respective success rates in relation to the representation of the algebra problem. When faced with a single-reference story problem, students were more likely to choose and more successful when choosing an informal strategy over a formal strategy, whereas the opposite was true for single-reference symbolic problems. In the case of double-reference story problems, however, formal strategies were chosen more often and led to more correct answers than informal strategies, as was the case for double-reference symbolic problems. 
+	
+	To explain this, \citeA{KoedNath2008} propose that informal methods are taxing on working memory when solving double-reference story problems, which makes students prefer and work better with symbolic representations, as all the information needed is concisely contained in an algebraic equation. Moreover, they identify benefits to the \textit{grounded representation} of story problems, such as easier access to problem-solving methods students use in real-life, and a context that facilitates error-checking (if the story mentions dollars and cents, for example, common knowledge about what their labels represent makes it difficult to accidentally add them under the same label of dollars or cents). Though Nathan and Koedinger acknowledge that translation from a story problem to an equation has its difficulties and cognitive demands, they do not posit that translation tells the whole story, and rather predict that single-reference story problems are best solved with informal strategies, and double-reference story problems are best solved with formal strategies, despite any translation that needs to take place.
+	
+	
+	\section{The Model}
+	
+	%\subsection{Learning to Choose a Strategy}
+	
+	
+	Using the probabilistic language WebPPL ({Goodman and Tenenbaum}), we have created a model attempts to synthesize the work of \citeA{KoedNath2004} and provide a hypothesis of the cognitive pathways that have led to their findings. %(\textbf{Nathan Koedinger 2008}), and (\textbf{Singapore}) 
+	While \citeA{KoedNath2004} show that the difference in success students have with story problems versus equation problems is largely due to the strategies most common for each type of problem and the success rates of those strategies, they provide no discussion of how students choose what strategy to use for a given problem. One such explanation can be found in \cite{Siegler}, which presents a developmental theory of how children and youths learn to solve unfamiliar problems by choosing among a small number of strategies. \TODO{a bit more here, maybe}
+	
+	In our model, we explore the psychology of strategy choices that math students go through when learning to solve single-reference story and symbolic problems. To do so, we drew on the demonstrated preference of strategies that \citeA{KoedNath2008} uncovered and the notion of cor problem type-strategy correspondence from the work of \citeA{Singapore}. (\TODO{include a figure with our theoretical framework?}). The aim of our model was to replicate the rates of successes of the three main strategies from \cite{KoedNath2004}, which would not only support their theories on single-reference story and symbolic problems, but also mark our success in demonstrating how students make these choices.
+	
+	\subsection{Current Methods}
+	
+	Note that in our current model we restrict the consideration to single-reference start-unkown linear equations, that is, equations of the form $x*a+b=c$, where $a,b,c\in\mathbb{N}$. Algebra problems in our model are considered as variables with three attributes. The \verb|verbal| attribute is a boolean, where true indicates a story representation and false indicates equation representation. The \verb|inputs| attribute is a list of inputs, variables and constants, that make up the problem, listed in order of appearance. The \verb|ops| attribute is a list of operations performed in the problem (key verbal words, or symbols), listed in order of appearance.
+	For example, problem (A) would be represented as 
+	\begin{verbatim}
+	{verbal: false, inputs: ['x', 6, 66, 84], 
+	ops: ['*', '+', '=']}
+	\end{verbatim}
+	whereas problem (B) would be represented as
+	\begin{verbatim}
+	{verbal: true, inputs: ['x', 6, 66, 84], 
+	ops: ['per', 'and', 'total']}
+	\end{verbatim}
+	
+	The unwind strategy is modeled by performing operations sequentially, in reverse order, with some probability of error in order or operations performed. The guess and test strategy is modeled using recursion, where the agent uniformally draws a number between 1 and 10, plugs it in, adjusts their range based on whether their guess yielded an answer too high or too low, then tries again. The symbolic manipulation strategy requires the problem to be in symbolic notation, so if the problem is verbal, it is run through a \verb|story2eq| function, which returns a problem with symbolic \verb|ops| rather than verbal ones. There is some probability of error in this conversion process. The symbolic manipulation function then takes the equation, undoes a single operation, simplifies the equation, and recurses until left with one \verb|op| (=) and two \verb|inputs| ($x$ and a number), at which point it returns the solution. Note that there is some probability that the agent chooses the wrong order of operations, and there is also a probability that the agent undoes the operation incorrectly (for example, if a student attempts to balance the equation by undoing the operation on both sides of the \textit{operation} symbol rather than both sides of the \textit{equals} symbol). These two errors were the most common errors that \citeA{KoedNath2004} found, so we made sure to incorporate this into our model.
+	
+	We also consider a \verb|time_elapsed| variable that is incremented during the different methods, most relevantly, at each recursive step of the guess and test method, to simulate the inefficiency of this method. If a student runs out of time allotted for the whole exam, they must return \verb|null| as their answer.
+	
+	We set a prior distribution for what strategies a student should use, starting with a uniform dirichlet. We then conditioned on a set of observed problems having the correct answers, and Inferred the posterior using the MCMC method. In order to take into acount existing beliefs a student might have about what sorts of strategies are best to use depending on what the problem representation is, we have also experimented with using a two different dirichlet priors, one for equation problems and one for story problems. With this, we can represent students' pre-existing beliefs. We then return the posterior distribution over strategies, learned by the student through observed data.
+	
+	
+	
+	\section{Preliminary Results}
+	\TODO{Result synopsis, add figures!}
+	
+	\section{Future Work}
+	Throughout the remaining weeks of the quarter, we will be looking into adding new problems to our model. We currently give the model observed data with answers to condition on, and then we visualize the posterior. This, in a sense, models students' seeing example problems in class, or on an exam review, before being exposed to new problems. We are interested in added new data, without answers, and seeing if the 
+	Our goal is for the posterior to match up with the rates at which students used different strategies in \cite{KoedNath2004, KoedNath2008}, and for the posterior predictive to match up with rates of success students had in seeing new problems and applying their learned strategies. 
+	
+	Furthermore, we are interested in examining the rates of \textit{no response} that our model yields. Currently, our model only returns \verb|null| when the student runs out of time. However, we would like to consider ways to model a conceptual misunderstanding and have instances of conceptual misunderstanding also lead to no response. \citeA{KoedNath2008} also discuss giving up as a common finding in students' work that led to no response. In order to model this, we can consider having a \verb|time_elapsed| variable not just during the duration of the ``exam", but also throughout the solving of a single problem. In this way, we could allow for students to mess up, find their mistake, try again, etc., and have the imposed time limit affect their giving up and leaving no response in a more meaningful way than our model current does.
+	
+	We will also work on visualization techniques to adequately present our findings in the final paper and in the presentation.
+	
+	If time permits, we also which to lift the current restriction of problems being single-reference linear equations of the form $x*a+b=c$. Considering other formulations of single-reference problems would create a more robust model. Furthermore, if we can generalize our model to be able to handle double-reference problems, we could confirm whether the hypothesis represented by our cognitive model holds in the double-reference situation by seeing if the success rates reverse, as described in \cite{KoedNath2008}.
+	
+	%\section{Discussion}
+	%
+	%\subsection{Arithmetic Interference on Algebra}
+	%
+	%The findings of (\textbf{citation}) suggest such an explanation that appeals to a phenomenon suggested by (\textbf{citation of number sense}) set in the problem solving realm: interference of prior knowledge. In this study, the authors introduce a hiccup in the acquisition of algebraic problem-solving methods such as symbol manipulation, namely the naive implementation of arithmetic strategies such as unwind and guess and check to algebra problems. That is, in the process of learning which strategies to use for certain problems (\textbf{citation referring to this process of choosing optimal strategies}), students who were able to inhibit interference from prior arithmetic knowledge in a number of different metrics were more likely to solve the given algebraic problems correctly.
+	%
+	%This work suggests a correspondence between algebraic strategies with problems that are purely algebraic in nature, and arithmetic strategies with problems that can be arithmetic in nature.
+	
+	
+	
+	%\subsection{Figures}
+	%
+	%All artwork must be very dark for purposes of reproduction and should
+	%not be hand drawn. Number figures sequentially, placing the figure
+	%number and caption, in 10~point, after the figure with one line space
+	%above the caption and one line space below it, as in
+	%Figure~\ref{sample-figure}. If necessary, leave extra white space at
+	%the bottom of the page to avoid splitting the figure and figure
+	%caption. You may float figures to the top or bottom of a column, or
+	%set wide figures across both columns.
+	%
+	%\begin{figure}[ht]
+	%\begin{center}
+	%\fbox{CoGNiTiVe ScIeNcE}
+	%\end{center}
+	%\caption{This is a figure.} 
+	%\label{sample-figure}
+	%\end{figure}
+	
+	
+	\section{Acknowledgments}
+	
+	We'd like to thank Robert Hawkins for his continual help and support throughout the quarter, and Jay McClelland for his help and guidance during the early stages of this research. Finally, we'd like to thank Noah Goodman for introducing us to the beauty of probabilistic modeling.
+	
+	
+	%\nocite{ChalnickBillman1988a}
+	%\nocite{Feigenbaum1963a}
+	%\nocite{Hill1983a}
+	%\nocite{OhlssonLangley1985a}
+	% \nocite{Lewis1978a}
+	%\nocite{Matlock2001}
+	%\nocite{NewellSimon1972a}
+	%\nocite{ShragerLangley1990a}
+	
+	
+	\bibliographystyle{apacite}
+	
+	\setlength{\bibleftmargin}{.125in}
+	\setlength{\bibindent}{-\bibleftmargin}
+	
+	\bibliography{CogSci_Template}
+	
+	
 \end{document}
