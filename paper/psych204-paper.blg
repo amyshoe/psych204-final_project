@@ -16,85 +16,82 @@ You're missing a field name---line 10 of file CogSci_Template.bib
  : %  author =  {A. Chalnick and D. Billman},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You're missing a field name---line 21 of file CogSci_Template.bib
+You're missing a field name---line 20 of file CogSci_Template.bib
  : 
  : %  author =  {E. A. Feigenbaum},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-I was expecting a `,' or a `}'---line 64 of file CogSci_Template.bib
+I was expecting a `,' or a `}'---line 63 of file CogSci_Template.bib
  :  
  :  pages = {366--397}
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You're missing a field name---line 95 of file CogSci_Template.bib
+You're missing a field name---line 103 of file CogSci_Template.bib
  : 
  : %  author =  {S. Ohlsson and P. Langley},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You're missing a field name---line 104 of file CogSci_Template.bib
+You're missing a field name---line 112 of file CogSci_Template.bib
  : 
  : %  author =  {Teenie Matlock},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You're missing a field name---line 113 of file CogSci_Template.bib
+You're missing a field name---line 121 of file CogSci_Template.bib
  : 
  : %  author =  {C. Lewis},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You're missing a field name---line 122 of file CogSci_Template.bib
+You're missing a field name---line 130 of file CogSci_Template.bib
  : 
  : %  author =  {A. Newell and H. A. Simon},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You're missing a field name---line 130 of file CogSci_Template.bib
+You're missing a field name---line 138 of file CogSci_Template.bib
  : 
  : %  editor =  {J. Shrager and P. Langley},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "KoedNath2008"
-Warning--I didn't find a database entry for "NathKoed2004"
-Warning--I didn't find a database entry for "NathKoed2008"
-Warning--I didn't find a database entry for "Siegler"
 apacite.bst [2012/02/25 v6.01 APA bibliography style]
 You've used 7 entries,
             6735 wiz_defined-function locations,
-            1294 strings with 11595 characters,
-and the built_in function-call counts, 13937 in all, are:
-= -- 1758
+            1288 strings with 11534 characters,
+and the built_in function-call counts, 13588 in all, are:
+= -- 1710
 > -- 95
-< -- 695
-+ -- 770
+< -- 685
++ -- 738
 - -- 14
-* -- 917
-:= -- 2717
+* -- 899
+:= -- 2656
 add.period$ -- 29
 call.type$ -- 7
 change.case$ -- 119
 chr.to.int$ -- 0
 cite$ -- 14
-duplicate$ -- 336
-empty$ -- 507
-format.name$ -- 164
-if$ -- 2574
+duplicate$ -- 309
+empty$ -- 499
+format.name$ -- 156
+if$ -- 2518
 int.to.chr$ -- 0
 int.to.str$ -- 14
 missing$ -- 0
 newline$ -- 175
 num.names$ -- 56
-pop$ -- 223
+pop$ -- 218
 preamble$ -- 1
 purify$ -- 28
 quote$ -- 0
-skip$ -- 834
+skip$ -- 824
 stack$ -- 0
-substring$ -- 857
-swap$ -- 189
+substring$ -- 811
+swap$ -- 177
 text.length$ -- 14
 text.prefix$ -- 0
 top$ -- 1
 type$ -- 560
 warning$ -- 0
-while$ -- 58
+while$ -- 50
 width$ -- 0
 write$ -- 211
 (There were 8 error messages)

@@ -114,37 +114,9 @@ Koedinger, K\BPBI R.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
-M.~Nathan%
-\ \BBA {} Koedinger%
+Nathan%
 }{%
-M.~Nathan%
-\ \BBA {} Koedinger%
-}{%
-{\protect \APACyear {2000}}%
-}]{%
-KoedNath2000}
-\APACinsertmetastar {%
-KoedNath2000}%
-\begin{APACrefauthors}%
-Nathan, M.%
-\BCBT {}\ \BBA {} Koedinger, K\BPBI R.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2000}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Teachers' and researchers' beliefs about the development
-  of algebraic reasoning} {Teachers' and researchers' beliefs about the
-  development of algebraic reasoning}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Journal for Research in Mathematics
-  Education}{31}{}{168--190}.
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
-M\BPBI J.~Nathan%
-}{%
-M\BPBI J.~Nathan%
+Nathan%
 }{%
 {\protect \APACyear {2012}}%
 }]{%
@@ -162,6 +134,34 @@ Nathan, M\BPBI J.%
   formalisms in formal education}.{\BBCQ}
 \newblock
 \APACjournalVolNumPages{Educational Psychologist}{47}{}{125--148}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nathan%
+\ \BBA {} Koedinger%
+}{%
+Nathan%
+\ \BBA {} Koedinger%
+}{%
+{\protect \APACyear {2000}}%
+}]{%
+KoedNath2000}
+\APACinsertmetastar {%
+KoedNath2000}%
+\begin{APACrefauthors}%
+Nathan, M\BPBI J.%
+\BCBT {}\ \BBA {} Koedinger, K\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2000}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Teachers' and researchers' beliefs about the development
+  of algebraic reasoning} {Teachers' and researchers' beliefs about the
+  development of algebraic reasoning}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal for Research in Mathematics
+  Education}{31}{}{168--190}.
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
