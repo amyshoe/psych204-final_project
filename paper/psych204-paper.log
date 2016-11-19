@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  18 NOV 2016 17:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  18 NOV 2016 19:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -330,13 +330,13 @@ Underfull \hbox (badness 1237) in paragraph at lines 137--138
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 161--162
-[]\OT1/ptm/m/n/10 For a more de-tailed ac-count of the cur-rent
+Underfull \hbox (badness 5345) in paragraph at lines 159--160
+[]\OT1/ptm/m/n/10 For a more de-tailed ac-count of the cur-rent state
  []
 
 
-Underfull \hbox (badness 5175) in paragraph at lines 161--162
-\OT1/ptm/m/n/10 state of our code, see the source code on github:
+Underfull \hbox (badness 6625) in paragraph at lines 159--160
+\OT1/ptm/m/n/10 of our code, re-fer to the source code on github:
  []
 
 [3] (./psych204-paper.bbl) [4
@@ -345,7 +345,7 @@ Underfull \hbox (badness 5175) in paragraph at lines 161--162
 Here is how much of TeX's memory you used:
  3553 strings out of 493117
  46107 string characters out of 6135433
- 120290 words of memory out of 5000000
+ 121290 words of memory out of 5000000
  6950 multiletter control sequences out of 15000+600000
  24844 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -359,7 +359,7 @@ msbm10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/courier/ucrr8a.p
 fb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/l
 ocal/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texli
 ve/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on psych204-paper.pdf (4 pages, 102086 bytes).
+Output written on psych204-paper.pdf (4 pages, 102364 bytes).
 PDF statistics:
  50 PDF objects out of 1000 (max. 8388607)
  35 compressed objects within 1 object stream
