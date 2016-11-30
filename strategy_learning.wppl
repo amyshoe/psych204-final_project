@@ -1,4 +1,4 @@
-
+globalStore.time_allotted = 80
 globalStore.time_elapsed = 0
 var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
 
@@ -9,13 +9,13 @@ var unwind = function(problem){
       //do the correct reverse order op (first look for 'total/is' then 'and', then 'per/each')
       var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1];
       increment_time(1)
-      if (globalStore.time_elapsed < 30) {
+      if (globalStore.time_elapsed < globalStore.time_allotted) {
         return answer;
       } else {return null;}
     } else { //PEMDAS error
       var answer = (problem.inputs[3]/problem.inputs[1]) - problem.inputs[2]
       increment_time(1)
-      if (globalStore.time_elapsed < 30) {
+      if (globalStore.time_elapsed < globalStore.time_allotted) {
         return answer;
       } else {return null;}
     }
@@ -24,13 +24,13 @@ var unwind = function(problem){
       //do the correct reverse order op (first look for '=' then '+', then '*')
       var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1]
       increment_time(1)
-      if (globalStore.time_elapsed < 30) {
+      if (globalStore.time_elapsed < globalStore.time_allotted) {
         return answer;
       } else {return null;}
     } else { //PEMDAS error
       var answer = (problem.inputs[3] / problem.inputs[1])- problem.inputs[2]
       increment_time(1)
-      if (globalStore.time_elapsed < 30) {
+      if (globalStore.time_elapsed < globalStore.time_allotted) {
         return answer;
       } else {return null;}
     }
@@ -45,12 +45,12 @@ var guess_check = function(problem) {
     var plugged_in = guess * problem.inputs[1] + problem.inputs[2]
     if (plugged_in < problem.inputs[3]) { // guess was too small
       increment_time(2)
-      if (globalStore.time_elapsed < 30) {
+      if (globalStore.time_elapsed < globalStore.time_allotted) {
         return make_guess(guess + 1, guess + 10)
       } else {return null}
     } else if (plugged_in > problem.inputs[3]) { // guess was too large
       increment_time(2)
-      if (globalStore.time_elapsed < 30) {
+      if (globalStore.time_elapsed < globalStore.time_allotted) {
         return make_guess(guess - 10, guess - 1)
       } else {return null}
     } else { // guess was correct
@@ -78,7 +78,7 @@ var sym_manip = function(problem) {
       }
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['=']}
       increment_time(1)
-      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
         return sym_manip(simplified_problem);
       } else {return null;}
     } else { // of the form x*a+b=c
@@ -86,7 +86,7 @@ var sym_manip = function(problem) {
       new_inputs.push(problem.inputs[3] - problem.inputs[2]) // ['x', a, c-b]
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['*','=']}
       increment_time(1)
-      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
         return sym_manip(simplified_problem);
       } else {return null;}
     }
@@ -97,7 +97,7 @@ var sym_manip = function(problem) {
       new_inputs.push(problem.inputs[3] / problem.inputs[1]) //['x', b, c/a]
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
       increment_time(1)
-      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
         return sym_manip(simplified_problem);
       } else {return null;}
     } else { // error in op balancing
@@ -106,7 +106,7 @@ var sym_manip = function(problem) {
       new_inputs.push(problem.inputs[3]) //['x', b/a, c]
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
       increment_time(1)
-      if (globalStore.time_elapsed < 30) { // if time allows, recurse!
+      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
         return sym_manip(simplified_problem);
       } else {return null;}
     }
@@ -175,20 +175,31 @@ var model = function() {
 
     var obsFn = function(idx) {condition(myAnswers[idx] == trueAnswers[idx])}
     mapData({data: indices}, obsFn)
-  
-    return {EQunwindProb: eqStratPrior[0],
-            EQguessProb: eqStratPrior[1],
-            EQsymManipProb: eqStratPrior[2],
-            STORYunwindProb: storyStratPrior[0],
-            STORYguessCheckProb: storyStratPrior[1],
-            STORYsymManipProb: storyStratPrior[2]}
+    
+    // New problems!
+    var testProblem1 = {verbal: true, inputs: ['x', 10, 45, 75], ops: ['per', 'and', 'is']}
+    var testProblem2 = {verbal: false, inputs: ['x', 10, 45, 75], ops: ['*', '+', '=']}
+    var testProblem3 = {verbal: true, inputs: ['x', 4, 2, 50], ops: ['each', 'and', 'total']}
+    var testProblem4 = {verbal: false, inputs: ['x', 4, 2, 50], ops: ['*', '+', '=']}
+    var newData = [testProblem1, testProblem2, testProblem3, testProblem4]
+    var newStrategies = mapData({data: newData}, chooseStrategies)
+    var newAnswers = map2(getAnswer, newData, newStrategies)
+    
+    return {Story1: newAnswers[0], Eq1: newAnswers[1], Story2: newAnswers[2], Eq2: newAnswers[3]}
+//     return {EQunwindProb: eqStratPrior[0],
+//             EQguessProb: eqStratPrior[1],
+//             EQsymManipProb: eqStratPrior[2],
+//             STORYunwindProb: storyStratPrior[0],
+//             STORYguessCheckProb: storyStratPrior[1],
+//             STORYsymManipProb: storyStratPrior[2]}
 //     return {eq_strategies: eqStrats}
 //     return {story_strategies: storyStrats}    
 }
 
 
-var d = Infer({method: 'MCMC', samples: 10000}, model)
-viz.marginals(d, {xLabel: "Probability of Strategy Being Used"})
+var d = Infer({method: 'MCMC', samples: 100000}, model)
+
+viz.marginals(d, {xLabel: "Answer Given"})
 
 //THING2:  POSTERIOR PREDICTIVES (NEW DATA)
 //THING3:  TRY DIFFERENT PRIORS FOR DIFFERENT PROBLEMS
