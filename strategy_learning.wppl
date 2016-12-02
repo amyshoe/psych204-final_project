@@ -1,21 +1,24 @@
-globalStore.time_allotted = 80
-globalStore.time_elapsed = 0
-var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
+// globalStore.time_allotted = 60
+// globalStore.time_elapsed = 0
+// var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
 
+//var time_elapse = function(time, lapse){return time - lapse}
 
-var unwind = function(problem){ 
+var unwind = function(problem, time){ 
   if (problem.verbal) {
     if (flip(.7)) {
       //do the correct reverse order op (first look for 'total/is' then 'and', then 'per/each')
       var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1];
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) {
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2 >= 0){
         return answer;
       } else {return null;}
     } else { //PEMDAS error
       var answer = (problem.inputs[3]/problem.inputs[1]) - problem.inputs[2]
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) {
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2 >=0){
         return answer;
       } else {return null;}
     }
@@ -23,14 +26,16 @@ var unwind = function(problem){
     if (flip(.5)) {
       //do the correct reverse order op (first look for '=' then '+', then '*')
       var answer = (problem.inputs[3] - problem.inputs[2])/ problem.inputs[1]
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) {
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2){
         return answer;
       } else {return null;}
     } else { //PEMDAS error
       var answer = (problem.inputs[3] / problem.inputs[1])- problem.inputs[2]
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) {
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2 >= 0){
         return answer;
       } else {return null;}
     }
@@ -38,20 +43,22 @@ var unwind = function(problem){
 }
 
 
-var guess_check = function(problem) {
+var guess_check = function(problem, time) {
   // guess and check helper function
-  var make_guess = function(lower, upper) {
+  var make_guess = function(lower, upper, time) {
     var guess = uniformDraw(_.range(lower,upper))
     var plugged_in = guess * problem.inputs[1] + problem.inputs[2]
     if (plugged_in < problem.inputs[3]) { // guess was too small
-      increment_time(2)
-      if (globalStore.time_elapsed < globalStore.time_allotted) {
-        return make_guess(guess + 1, guess + 10)
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2 >= 0){
+        return make_guess(guess + 1, guess + 10, time - 2)
       } else {return null}
     } else if (plugged_in > problem.inputs[3]) { // guess was too large
-      increment_time(2)
-      if (globalStore.time_elapsed < globalStore.time_allotted) {
-        return make_guess(guess - 10, guess - 1)
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2 >= 0){
+        return make_guess(guess - 10, guess - 1, time - 2)
       } else {return null}
     } else { // guess was correct
       return guess
@@ -63,7 +70,7 @@ var guess_check = function(problem) {
 }
 
 
-var sym_manip = function(problem) {
+var sym_manip = function(problem, time) {
   if (problem.ops.length == 1) { // base case
     return Math.floor(problem.inputs.slice(-1))
   }
@@ -77,17 +84,19 @@ var sym_manip = function(problem) {
         new_inputs.push(problem.inputs[3] / problem.inputs[1]) // ['x', c/a]
       }
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['=']}
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
-        return sym_manip(simplified_problem);
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){
+        return sym_manip(simplified_problem, time - 1);
       } else {return null;}
     } else { // of the form x*a+b=c
       var new_inputs = problem.inputs.slice(0,2) // ['x', a]
       new_inputs.push(problem.inputs[3] - problem.inputs[2]) // ['x', a, c-b]
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['*','=']}
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
-        return sym_manip(simplified_problem);
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){  
+        return sym_manip(simplified_problem, time - 1);
       } else {return null;}
     }
   } else if (problem.ops.length > 2) { // PEMDAS error -- can only happen with multiple ops
@@ -96,18 +105,20 @@ var sym_manip = function(problem) {
       new_inputs.push(problem.inputs[2]) // ['x', b]
       new_inputs.push(problem.inputs[3] / problem.inputs[1]) //['x', b, c/a]
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
-        return sym_manip(simplified_problem);
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){  
+        return sym_manip(simplified_problem, time - 1);
       } else {return null;}
     } else { // error in op balancing
       var new_inputs = ['x']
       new_inputs.push(problem.inputs[2] / problem.inputs[1]) //['x', b/a]
       new_inputs.push(problem.inputs[3]) //['x', b/a, c]
       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
-      increment_time(1)
-      if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
-        return sym_manip(simplified_problem);
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){  
+        return sym_manip(simplified_problem, time - 1);
       } else {return null;}
     }
   }
@@ -116,7 +127,7 @@ var sym_manip = function(problem) {
 var story2eq = function(problem){
   if(flip(0.9)) { // correct translation
     var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
-    increment_time(2)
+//     increment_time(2)
     return modified_problem
   } else { // switched a and b --> x*b + a = c
     var new_inputs = ['x']
@@ -124,22 +135,25 @@ var story2eq = function(problem){
     new_inputs.push(problem.inputs[1])
     new_inputs.push(problem.inputs[3])
     var modified_problem = {verbal: true, inputs: new_inputs, ops: ['*', '+', '=']}
-    increment_time(2)
+//     increment_time(2)
     return modified_problem
   }
 }
     
 
 var getAnswer = function(problem, strategy) {
-    // Do any necessary conversions 
-    if (problem.verbal && strategy == 'sym_manip') {var problem = story2eq(problem)}
+    // Do any necessary conversions
+    // Time allotted per question: 6
+    if (problem.verbal && strategy == 'sym_manip') {
+      var problem = story2eq(problem, 4) //deduction of two time units because of conversion
+    }
     // Solve the problem with the given strategy!
     if (strategy == "unwind") { 
-      return unwind(problem)
+      return unwind(problem, 6)
     } else if (strategy == "sym_manip") { 
-      return sym_manip(problem)
+      return sym_manip(problem, 6)
     } else { 
-      return guess_check(problem) 
+      return guess_check(problem, 6) 
     }
 }
 
@@ -159,8 +173,8 @@ var model = function() {
     var strategies = ['unwind', 'guess_check', 'sym_manip']
     // prior for which strategy: unwind/untangle, guess n check, symbolic manip
     //var stratPrior = T.toScalars(dirichlet(ones([strategies.length, 1])))
-    var eqStratPrior = T.toScalars(dirichlet(Vector([1,1,5])));
-    var storyStratPrior = T.toScalars(dirichlet(Vector([3,1,1])))
+    var eqStratPrior = T.toScalars(dirichlet(Vector([1,1,5]))); //also: [1, 3, 5]
+    var storyStratPrior = T.toScalars(dirichlet(Vector([3,1,1]))) //also: [3, 2, 1]
     var chooseStrategies = function(problem){
         if (problem.verbal){
            return sample(Categorical({ps: storyStratPrior, vs: strategies}));
