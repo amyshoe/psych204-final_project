@@ -1,0 +1,269 @@
+// globalStore.time_allotted = 60
+// globalStore.time_elapsed = 0
+// var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
+
+//var time_elapse = function(time, lapse){return time - lapse}
+
+var unwind = function(problem, ops_order, num_seq){
+  // Student could not solve problem
+  if (ops_order[0] == 'panic') {
+    return null
+  }
+  // First operation
+  if (ops_order[0] == '-') {
+    var step1 = problem.inputs[num_seq[0]] - problem.inputs[num_seq[1]]
+    // Second operation
+    if (ops_order[1] == '/') {
+      var answer = step1 / problem.inputs[num_seq[2]]
+      return answer
+    }
+    else {
+      var answer = step1 - problem.inputs[num_seq[2]]
+      return answer
+    }
+  }
+  // First operation
+  else {
+    var step1 = problem.inputs[num_seq[0]] / problem.inputs[num_seq[1]]
+    // Second operation
+    if (ops_order[1] == '/') {
+      var answer = step1 / problem.inputs[num_seq[2]]
+      return answer
+    }
+    else {
+      var answer = step1 - problem.inputs[num_seq[2]]
+      return answer
+    }
+  }
+}
+
+
+var guess_check = function(problem, time) {
+  // guess and check helper function
+  var make_guess = function(lower, upper, time) {
+    var guess = uniformDraw(_.range(lower,upper))
+    var plugged_in = guess * problem.inputs[1] + problem.inputs[2]
+    if (plugged_in < problem.inputs[3]) { // guess was too small
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2 >= 0){
+        return make_guess(guess + 1, guess + 10, time - 2)
+      } else {return null}
+    } else if (plugged_in > problem.inputs[3]) { // guess was too large
+//       increment_time(2)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+      if (time - 2 >= 0){
+        return make_guess(guess - 10, guess - 1, time - 2)
+      } else {return null}
+    } else { // guess was correct
+      return guess
+    }
+  }
+  var lower = 1
+  var upper = 11
+  return make_guess(lower, upper)
+}
+
+
+var sym_manip = function(problem, time) {
+  if (problem.ops.length == 1) { // base case
+    return Math.floor(problem.inputs.slice(-1))
+  }
+  // else, ops.length == 2 or 3
+  if (flip(.6) || problem.ops.length == 2) { //correct PEMDAS and op balancing
+    if (problem.ops.length == 2) { // of the form x*a=c or x+b=c
+      var new_inputs = ['x']
+      if ('+' in problem.ops) {
+        new_inputs.push(problem.inputs[3] - problem.inputs[1]) // ['x', c-b]
+      } else {
+        new_inputs.push(problem.inputs[3] / problem.inputs[1]) // ['x', c/a]
+      }
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['=']}
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){
+        return sym_manip(simplified_problem, time - 1);
+      } else {return null;}
+    } else { // of the form x*a+b=c
+      var new_inputs = problem.inputs.slice(0,2) // ['x', a]
+      new_inputs.push(problem.inputs[3] - problem.inputs[2]) // ['x', a, c-b]
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['*','=']}
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){  
+        return sym_manip(simplified_problem, time - 1);
+      } else {return null;}
+    }
+  } else if (problem.ops.length > 2) { // PEMDAS error -- can only happen with multiple ops
+    if(flip(0.8)) { // correct op balancing
+      var new_inputs = ['x']
+      new_inputs.push(problem.inputs[2]) // ['x', b]
+      new_inputs.push(problem.inputs[3] / problem.inputs[1]) //['x', b, c/a]
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){  
+        return sym_manip(simplified_problem, time - 1);
+      } else {return null;}
+    } else { // error in op balancing
+      var new_inputs = ['x']
+      new_inputs.push(problem.inputs[2] / problem.inputs[1]) //['x', b/a]
+      new_inputs.push(problem.inputs[3]) //['x', b/a, c]
+      var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
+//       increment_time(1)
+//       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+      if (time - 1 >= 0){  
+        return sym_manip(simplified_problem, time - 1);
+      } else {return null;}
+    }
+  }
+}
+
+var story2eq = function(problem){
+  if(flip(0.9)) { // correct translation
+    var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
+//     increment_time(2)
+    return modified_problem
+  } else { // switched a and b --> x*b + a = c
+    var new_inputs = ['x']
+    new_inputs.push(problem.inputs[2])
+    new_inputs.push(problem.inputs[1])
+    new_inputs.push(problem.inputs[3])
+    var modified_problem = {verbal: true, inputs: new_inputs, ops: ['*', '+', '=']}
+//     increment_time(2)
+    return modified_problem
+  }
+}
+    
+
+var getAnswer = function(problem, strategy) {
+    // Do any necessary conversions
+    // Time allotted per question: 6
+    if (problem.verbal && strategy[0] == 'sym_manip') {
+      var problem = story2eq(problem, 4) //deduction of two time units because of conversion
+    }
+    // Solve the problem with the given strategy!
+    if (strategy[0] == "unwind") { 
+      return unwind(problem, strategy[1], strategy[2])
+    } else if (strategy[0] == "sym_manip") { 
+      return sym_manip(problem, 6)
+    } else { 
+      return guess_check(problem, 6) 
+    }
+}
+
+var model = function() {
+  
+    // Data
+    var problem1 = {verbal: true, inputs: ['x', 6, 66, 84], ops: ['per', 'and', 'total']}
+    var problem2 = {verbal: false, inputs: ['x', 6, 66, 84], ops: ['*', '+', '=']}
+    var problem3 = {verbal: true, inputs: ['x', 3, 64, 133], ops: ['each', 'and', 'is']}
+    var problem4 = {verbal: false, inputs: ['x', 3, 64, 133], ops: ['*', '+', '=']}
+    var problem5 = {verbal: true, inputs: ['x', 5, 22, 47], ops: ['each', 'and', 'is']}
+    var problem6 = {verbal: false, inputs: ['x', 5, 22, 47], ops: ['*', '+', '=']}
+    var observedData = [problem1, problem2, problem3, problem4, problem5, problem6]
+    var trueAnswers = [3, 3, 23, 23, 5, 5]
+    var indices = [0,1,2,3,4,5] // range(observedData.length)
+    var strategies = ['unwind', 'guess_check', 'sym_manip']
+    // prior for which strategy: unwind/untangle, guess n check, symbolic manip
+    //var stratPrior = T.toScalars(dirichlet(ones([strategies.length, 1])))
+    var eqStratPrior = T.toScalars(dirichlet(Vector([1,1,5]))); //also: [1, 3, 5]
+    var storyStratPrior = T.toScalars(dirichlet(Vector([3,1,1]))) //also: [3, 2, 1]
+    var chooseStrategies = function(problem){
+        if (problem.verbal){
+           return sample(Categorical({ps: storyStratPrior, vs: strategies}));
+        } else {
+          return sample(Categorical({ps: eqStratPrior, vs: strategies}));
+        }
+    }
+    
+    
+    // Set priors for UNWIND strategy
+    var EQ_op_order = ['panic',['/','-'],['-','/']]
+    var EQ_num_seq = [[3,2,1], [3,1,2], [2,3,1], [2,1,3]]
+    var eqUnwindPrior_ops = T.toScalars(dirichlet(Vector([4,2,2])))
+    var eqUnwindPrior_nums = T.toScalars(dirichlet(Vector([2,2,2,2])))
+
+    var STORY_op_order = ['panic',['/','-'],['-','/']]
+    var STORY_num_seq = [[3,2,1], [3,1,2]]
+    var storyUnwindPrior_ops = T.toScalars(dirichlet(Vector([1,3,3])))
+    var storyUnwindPrior_nums = T.toScalars(dirichlet(Vector([2,2])))
+   
+    var chooseUnwindOps = function(problem){
+      if (problem.verbal){
+        return sample(Categorical({ps: storyUnwindPrior_ops, vs: STORY_op_order}));
+      }
+      else {
+        return sample(Categorical({ps: eqUnwindPrior_ops, vs: EQ_op_order}));
+      }
+    }
+    var chooseUnwindNums = function(problem){
+      if (problem.verbal){
+        return sample(Categorical({ps: storyUnwindPrior_nums, vs: STORY_num_seq}));
+      }
+      else {
+        return sample(Categorical({ps: eqUnwindPrior_nums, vs: EQ_num_seq}));
+      }
+    }
+    
+    var myUnwindOps = mapData({data: observedData}, chooseUnwindOps)
+    var myUnwindNums = mapData({data: observedData}, chooseUnwindNums)
+    
+    // get answers, and condition on those answers being true
+    var myStrategies = mapData({data: observedData}, chooseStrategies)
+    var getStratData = function(idx) {
+      if (myStrategies[idx] == 'unwind') {
+        return [myStrategies[idx], myUnwindOps[idx], myUnwindNums[idx]]
+      }
+      else {
+        return [myStrategies[idx]]
+      }
+    }
+    var relevantStratInfo = mapData({data: indices}, getStratData)
+    var myAnswers = map2(getAnswer, observedData, relevantStratInfo)
+    var obsFn = function(idx) {condition(myAnswers[idx] == trueAnswers[idx])}
+    mapData({data: indices}, obsFn)
+    
+    //New problems!
+    var testProblem1 = {verbal: true, inputs: ['x', 10, 45, 75], ops: ['per', 'and', 'is']}
+    var testProblem2 = {verbal: false, inputs: ['x', 10, 45, 75], ops: ['*', '+', '=']}
+    var testProblem3 = {verbal: true, inputs: ['x', 4, 2, 50], ops: ['each', 'and', 'total']}
+    var testProblem4 = {verbal: false, inputs: ['x', 4, 2, 50], ops: ['*', '+', '=']}
+    var newData = [testProblem1, testProblem2, testProblem3, testProblem4]
+    var newStrategies = mapData({data: newData}, chooseStrategies)
+    var newUnwindOps = mapData({data: newData}, chooseUnwindOps)
+    var newUnwindNums = mapData({data: newData}, chooseUnwindNums)
+    
+    var getNewStratData = function(idx) {
+      if (newStrategies[idx] == 'unwind') {
+        return [newStrategies[idx], newUnwindOps[idx], newUnwindNums[idx]]
+      }
+      else {
+        return [newStrategies[idx]]
+      }
+    }
+    var newRelevantStratInfo = mapData({data: indices}, getNewStratData)
+    var newAnswers = map2(getAnswer, newData, newStrategies)
+    
+//     return {Story1: newAnswers[0], Eq1: newAnswers[1], Story2: newAnswers[2], Eq2: newAnswers[3]}
+    return {EQunwindProb: eqStratPrior[0],
+            EQguessProb: eqStratPrior[1],
+            EQsymManipProb: eqStratPrior[2],
+            STORYunwindProb: storyStratPrior[0],
+            STORYguessCheckProb: storyStratPrior[1],
+            STORYsymManipProb: storyStratPrior[2],
+            STORY1Answers: newAnswers[0],
+            STORY2Answers: newAnswers[2],
+            EQ1Answers: newAnswers[1],
+            EQ2Answers: newAnswers[3]}
+//     return {eq_strategies: eqStrats}
+//     return {story_strategies: storyStrats}    
+}
+
+
+var d = Infer({method: 'MCMC', samples: 100000}, model)
+
+viz.marginals(d)//, {xLabel: "Strategy Used"})
+
+//THING2:  POSTERIOR PREDICTIVES (NEW DATA)
+//THING3:  TRY DIFFERENT PRIORS FOR DIFFERENT PROBLEMS
