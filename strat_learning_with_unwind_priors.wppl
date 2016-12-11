@@ -136,21 +136,21 @@ var story2eq = function(problem){
 }
     
 
-var getAnswer = function(problem, strategy) {
-    // Do any necessary conversions
-    // Time allotted per question: 6
-    if (problem.verbal && strategy[0] == 'sym_manip') {
-      var problem = story2eq(problem, 4) //deduction of two time units because of conversion
-    }
-    // Solve the problem with the given strategy!
-    if (strategy[0] == "unwind") { 
-      return unwind(problem, strategy[1], strategy[2])
-    } else if (strategy[0] == "sym_manip") { 
-      return sym_manip(problem, 6)
-    } else { 
-      return guess_check(problem, 6) 
-    }
-}
+// var getAnswer = function(problem, strategy) {
+//     // Do any necessary conversions
+//     // Time allotted per question: 6
+//     if (problem.verbal && strategy[0] == 'sym_manip') {
+//       var problem = story2eq(problem, 4) //deduction of two time units because of conversion
+//     }
+//     // Solve the problem with the given strategy!
+//     if (strategy[0] == "unwind") { 
+//       return unwind(problem, strategy[1], strategy[2])
+//     } else if (strategy[0] == "sym_manip") { 
+//       return sym_manip(problem, 6)
+//     } else { 
+//       return guess_check(problem, 6) 
+//     }
+// }
 
 var model = function() {
   
