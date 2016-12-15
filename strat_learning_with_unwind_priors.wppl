@@ -225,31 +225,32 @@ var model = function() {
       }
     }
     var relevantStratInfo = mapData({data: indices}, getStratData)
-    var getAnswerDist = map2(getAnswer, observedData, relevantStratInfo)
+    var answerDist = map2(getAnswerDist, observedData, relevantStratInfo)
     //var obsFn = function(idx) {condition(myAnswers[idx] == trueAnswers[idx])}
     var obsFn = function(idx) {observe(answerDist, trueAnswers[idx])}
     mapData({data: indices}, obsFn)
-    
-    //New problems!
+
+    //new problems!
     var testProblem1 = {verbal: true, inputs: ['x', 10, 45, 75], ops: ['per', 'and', 'is']}
     var testProblem2 = {verbal: false, inputs: ['x', 10, 45, 75], ops: ['*', '+', '=']}
     var testProblem3 = {verbal: true, inputs: ['x', 4, 2, 50], ops: ['each', 'and', 'total']}
     var testProblem4 = {verbal: false, inputs: ['x', 4, 2, 50], ops: ['*', '+', '=']}
     var newData = [testProblem1, testProblem2, testProblem3, testProblem4]
+    var newIndices = [0, 1, 2, 3]
     var newStrategies = mapData({data: newData}, chooseStrategies)
     var newUnwindOps = mapData({data: newData}, chooseUnwindOps)
     var newUnwindNums = mapData({data: newData}, chooseUnwindNums)
     
     var getNewStratData = function(idx) {
       if (newStrategies[idx] == 'unwind') {
-        return [newStrategies[idx], newUnwindOps[idx], newUnwindNums[idx]]
+        return [myStrategies[idx], myUnwindOps[idx], myUnwindNums[idx]]
       }
       else {
         return [newStrategies[idx]]
       }
     }
-    var newRelevantStratInfo = mapData({data: indices}, getNewStratData)
-    var newAnswerDist = map2(getAnswer, newData, newRelevantStratInfo)
+    var newRelevantStratInfo = mapData({data: newIndices}, getNewStratData)
+    var newAnswerDist = map2(getAnswerDist, newData, newRelevantStratInfo)
     
 //     return {Story1: newAnswers[0], Eq1: newAnswers[1], Story2: newAnswers[2], Eq2: newAnswers[3]}
     // return {EQunwindProb: eqStratPrior[0],
