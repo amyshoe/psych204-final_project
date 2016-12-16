@@ -235,8 +235,9 @@ var model = function() {
     var relevantStratInfo = mapData({data: indices}, getStratData)
     var answerDist = map2(getAnswerDist, observedData, relevantStratInfo)
     //var obsFn = function(idx) {condition(myAnswers[idx] == trueAnswers[idx])}
-    var obsFn = function(idx) {observe(answerDist, trueAnswers[idx])}
-    mapData({data: indices}, obsFn)
+    //var obsFn = function(idx) {observe(answerDist, trueAnswers[idx])}
+    var obsFn = function(pair) {observe(pair[0], [pair[1]])}
+    mapData({data: zip(answerDist, trueAnswers)}, obsFn)
 
     //new problems!
     var testProblem1 = {verbal: true, inputs: ['x', 10, 45, 75], ops: ['per', 'and', 'is'], time: 6}
