@@ -69,6 +69,63 @@ var guess_check = function(problem, time) {
   return make_guess(lower, upper)
 }
 
+//previously deleted in the strat_learning_with_unwind_priors.wppl file
+
+//needs to be reformulated in the manner of unwind to eliminate the use of push
+// var sym_manip = function(problem, time) {
+//   if (problem.ops.length == 1) { // base case
+//     return Math.floor(problem.inputs.slice(-1))
+//   }
+//   // else, ops.length == 2 or 3
+//   if (flip(.6) || problem.ops.length == 2) { //correct PEMDAS and op balancing
+//     if (problem.ops.length == 2) { // of the form x*a=c or x+b=c
+//       var new_inputs = ['x']
+//       if ('+' in problem.ops) {
+//         new_inputs.push(problem.inputs[3] - problem.inputs[1]) // ['x', c-b]
+//       } else {
+//         new_inputs.push(problem.inputs[3] / problem.inputs[1]) // ['x', c/a]
+//       }
+//       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['=']}
+// //       increment_time(1)
+// //       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+//       if (time - 2 >= 0){
+//         return sym_manip(simplified_problem, time - 2);
+//       } else {return null;}
+//     } else { // of the form x*a+b=c
+//       var new_inputs = problem.inputs.slice(0,2) // ['x', a]
+//       new_inputs.push(problem.inputs[3] - problem.inputs[2]) // ['x', a, c-b]
+//       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['*','=']}
+// //       increment_time(1)
+// //       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+//       if (time - 2 >= 0){  
+//         return sym_manip(simplified_problem, time - 2);
+//       } else {return null;}
+//     }
+//   } else if (problem.ops.length > 2) { // PEMDAS error -- can only happen with multiple ops
+//     if(flip(0.8)) { // correct op balancing
+//       var new_inputs = ['x']
+//       new_inputs.push(problem.inputs[2]) // ['x', b]
+//       new_inputs.push(problem.inputs[3] / problem.inputs[1]) //['x', b, c/a]
+//       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
+// //       increment_time(1)
+// //       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+//       if (time - 2 >= 0){  
+//         return sym_manip(simplified_problem, time - 2);
+//       } else {return null;}
+//     } else { // error in op balancing
+//       var new_inputs = ['x']
+//       new_inputs.push(problem.inputs[2] / problem.inputs[1]) //['x', b/a]
+//       new_inputs.push(problem.inputs[3]) //['x', b/a, c]
+//       var simplified_problem = {verbal: false, inputs: new_inputs, ops: ['+', '=']}
+// //       increment_time(1)
+// //       if (globalStore.time_elapsed < globalStore.time_allotted) { // if time allows, recurse!
+//       if (time - 2 >= 0){  
+//         return sym_manip(simplified_problem, time - 2);
+//       } else {return null;}
+//     }
+//   }
+// }
+
 
 var sym_manip = function(problem, time) {
   if (problem.inputs.length == 2) { // base case
