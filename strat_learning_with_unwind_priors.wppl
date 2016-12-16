@@ -38,21 +38,21 @@ var unwind = function(problem, ops_order, num_seq){
 }
 
 
-var guess_check = function(problem, time) {
+var guess_check = function(problem) {
   // guess and check helper function
   var make_guess = function(lower, upper, time) {
     var guess = uniformDraw(_.range(lower,upper))
     var plugged_in = guess * problem.inputs[1] + problem.inputs[2]
     if (plugged_in < problem.inputs[3]) { // guess was too small
 //       increment_time(2)
-//       if (globalStore.time_elapsed < globalStore.time_allotted) {
+//       if (globalStore.time_elapsed < globalStore.time_allotted) 
       if (time - 2 >= 0){
         return make_guess(guess + 1, guess + 10, time - 2)
       } else {return null}
     } else if (plugged_in > problem.inputs[3]) { // guess was too large
 //       increment_time(2)
 //       if (globalStore.time_elapsed < globalStore.time_allotted) {
-      if (time - 2 >= 0){
+      if (problem.time - 2 >= 0){
         return make_guess(guess - 10, guess - 1, time - 2)
       } else {return null}
     } else { // guess was correct
@@ -61,11 +61,12 @@ var guess_check = function(problem, time) {
   }
   var lower = 1
   var upper = 11
+  var time = problem.time;
   return make_guess(lower, upper)
 }
 
-
-var sym_manip = function(problem, time) {
+//needs to be reformulated in the manner of unwind to eliminate the use of push
+var sym_manip = function(problem) {
   if (problem.ops.length == 1) { // base case
     return Math.floor(problem.inputs.slice(-1))
   }
@@ -121,29 +122,21 @@ var sym_manip = function(problem, time) {
 
 var story2eq = function(problem){
   if(flip(0.9)) { // correct translation
-    var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '=']}
-//     increment_time(2)
+    var modified_problem = {verbal: true, inputs: problem.inputs, ops: ['*', '+', '='], time: 4}
     return modified_problem
   } else { // switched a and b --> x*b + a = c
-    var new_inputs = ['x']
-    new_inputs.push(problem.inputs[2])
-    new_inputs.push(problem.inputs[1])
-    new_inputs.push(problem.inputs[3])
-    var modified_problem = {verbal: true, inputs: new_inputs, ops: ['*', '+', '=']}
-//     increment_time(2)
+    var new_inputs = ['x', problem.inputs[2], problem.inputs[1], problem.inputs[3]]
+    var modified_problem = {verbal: true, inputs: new_inputs, ops: ['*', '+', '='], time: 4}
     return modified_problem
   }
 }
-    
 
 var getAnswerDist = function(problem, strategy) {
     // Do any necessary conversions
     // Time allotted per question: 6
-  var localProblem = problem;
-  var localStrat = strategy;
-  var answerDist = cache(Infer ({method: 'forward'}, function(localProblem, localStrat){
+  var answerDist = cache(Infer ({method: 'forward'}, function(){
       if (problem.verbal && (strategy[0] == 'sym_manip')) {
-        var problem = story2eq(problem, 4) //deduction of two time units because of conversion
+        var problem = story2eq(problem) //deduction of two time units because of conversion
       }
       // Solve the problem with the given strategy!
       if (strategy[0] == "unwind") { 
@@ -160,12 +153,12 @@ var getAnswerDist = function(problem, strategy) {
 var model = function() {
   
     // Data
-    var problem1 = {verbal: true, inputs: ['x', 6, 66, 84], ops: ['per', 'and', 'total']}
-    var problem2 = {verbal: false, inputs: ['x', 6, 66, 84], ops: ['*', '+', '=']}
-    var problem3 = {verbal: true, inputs: ['x', 3, 64, 133], ops: ['each', 'and', 'is']}
-    var problem4 = {verbal: false, inputs: ['x', 3, 64, 133], ops: ['*', '+', '=']}
-    var problem5 = {verbal: true, inputs: ['x', 5, 22, 47], ops: ['each', 'and', 'is']}
-    var problem6 = {verbal: false, inputs: ['x', 5, 22, 47], ops: ['*', '+', '=']}
+    var problem1 = {verbal: true, inputs: ['x', 6, 66, 84], ops: ['per', 'and', 'total'], time: 6}
+    var problem2 = {verbal: false, inputs: ['x', 6, 66, 84], ops: ['*', '+', '='], time: 6}
+    var problem3 = {verbal: true, inputs: ['x', 3, 64, 133], ops: ['each', 'and', 'is'], time: 6}
+    var problem4 = {verbal: false, inputs: ['x', 3, 64, 133], ops: ['*', '+', '='], time: 6}
+    var problem5 = {verbal: true, inputs: ['x', 5, 22, 47], ops: ['each', 'and', 'is'], time: 6}
+    var problem6 = {verbal: false, inputs: ['x', 5, 22, 47], ops: ['*', '+', '='], time: 6}
     var observedData = [problem1, problem2, problem3, problem4, problem5, problem6]
     var trueAnswers = [3, 3, 23, 23, 5, 5]
     var indices = [0,1,2,3,4,5] // range(observedData.length)
@@ -231,10 +224,10 @@ var model = function() {
     mapData({data: indices}, obsFn)
 
     //new problems!
-    var testProblem1 = {verbal: true, inputs: ['x', 10, 45, 75], ops: ['per', 'and', 'is']}
-    var testProblem2 = {verbal: false, inputs: ['x', 10, 45, 75], ops: ['*', '+', '=']}
-    var testProblem3 = {verbal: true, inputs: ['x', 4, 2, 50], ops: ['each', 'and', 'total']}
-    var testProblem4 = {verbal: false, inputs: ['x', 4, 2, 50], ops: ['*', '+', '=']}
+    var testProblem1 = {verbal: true, inputs: ['x', 10, 45, 75], ops: ['per', 'and', 'is'], time: 6}
+    var testProblem2 = {verbal: false, inputs: ['x', 10, 45, 75], ops: ['*', '+', '='], time: 6}
+    var testProblem3 = {verbal: true, inputs: ['x', 4, 2, 50], ops: ['each', 'and', 'total'], time: 6}
+    var testProblem4 = {verbal: false, inputs: ['x', 4, 2, 50], ops: ['*', '+', '='], time: 6}
     var newData = [testProblem1, testProblem2, testProblem3, testProblem4]
     var newIndices = [0, 1, 2, 3]
     var newStrategies = mapData({data: newData}, chooseStrategies)
