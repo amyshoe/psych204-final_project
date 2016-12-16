@@ -1,4 +1,4 @@
-// globalStore.time_allotted = 60
+// // globalStore.time_allotted = 60
 // globalStore.time_elapsed = 0
 // var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
 
@@ -70,32 +70,53 @@ var sym_manip = function(problem, first_ops, second_ops) {
   // var panic = function () {return flip(0.05)}
   if (first_ops == 'null' && second_ops == 'null') { // base case
     return problem.inputs[1];
+
   } else if (first_ops == 'null'){
     //each recursion returns a symplified version of the problem
-    if (second_ops[2] == '-'){
+    if (second_ops[2] == '-'){ //subtract second
       var new_inputs = ['x', problem.inputs[second_ops[1]] - problem.inputs[second_ops[0]]]
-      (problem.time - 2 < 0) ? return null : return sym_manip({verbal: false, inputs: new_inputs, time: problem.time - 2}, 'null', 'null')
-    } else if (second_ops[2] == '/'){
+      var symplified_problem = {verbal: false, inputs: new_inputs, time: problem.time - 2};
+      if (problem.time - 2 < 0) {return null} //time condition
+      else {return sym_manip(symplified_problem, 'null', 'null')}
+
+    } else if (second_ops[2] == '/'){ //divide second
+
       var new_inputs = ['x', problem.inputs[second_ops[1]]/problem.inputs[second_ops[0]]]
-      (problem.time - 2 < 0) ? return null : return sym_manip({verbal: false, inputs: new_inputs, time: problem.time - 2}, 'null', 'null')      
+      var symplified_problem = {verbal: false, inputs: new_inputs, time: problem.time - 2}
+      if (problem.time - 2 < 0) {return null}  //time condition
+      else {return sym_manip(symplified_problem, 'null', 'null')}    
     }
+
   } else { //first_ops != null
     if (first_ops[2] == '-'){ //subtract first
-      if (any(function(x){return x == 2}, first_ops)) {
+      if (any(function(x){return x == 2}, first_ops)) { //find which of the three numbers is not in the operation
         var new_inputs = ['x', problem.inputs[1], problem.inputs[first_ops[1]] - problem.inputs[first_ops[0]]]
-        (problem.time - 2 < 0) ? return null : return sym_manip({verbal: false, inputs: new_inputs, time: problem.time - 2}, 'null', second_ops) 
+        var symplified_problem = {verbal: false, inputs: new_inputs, time: problem.time - 2}
+        if (problem.time - 2 < 0) {return null}  //time condition
+        else {return sym_manip(symplified_problem, 'null', second_ops)}
+
       } else {
+
         var new_inputs = ['x', problem.inputs[2], problem.inputs[first_ops[1]] - problem.inputs[first_ops[0]]]
-        (problem.time - 2 < 0) ? return null : return sym_manip({verbal: false, inputs: new_inputs, time: problem.time - 2}, 'null', second_ops) 
+        var symplified_problem = {verbal: false, inputs: new_inputs, time: problem.time - 2}
+        if (problem.time - 2 < 0) {return null} 
+        else {return sym_manip(symplified_problem, 'null', second_ops)}
       }
-    } else if (seq[2] == '/'){ //divide first
-      if (any(function(x){return x == 2}, first_ops)) {
-        new_inputs.push(problem.inputs[1])
-         var new_inputs = ['x', problem.inputs[1], problem.inputs[first_ops[1]] / problem.inputs[first_ops[0]]]
-        (problem.time - 2 < 0) ? return null : return sym_manip({verbal: false, inputs: new_inputs, time: problem.time - 2}, 'null', second_ops) 
+
+    } else if (first_ops[2] == '/'){ //divide first
+      if (any(function(x){return x == 2}, first_ops)) { //find which of the three numbers are not involved in operation
+
+        var new_inputs = ['x', problem.inputs[1], problem.inputs[first_ops[1]] / problem.inputs[first_ops[0]]]
+        var symplified_problem = {verbal: false, inputs: new_inputs, time: problem.time - 2}
+        if (problem.time - 2 < 0){ return null }
+        else {return sym_manip(symplified_problem, 'null', second_ops)}
+
       } else {
-         var new_inputs = ['x', problem.inputs[2], problem.inputs[first_ops[1]] / problem.inputs[first_ops[0]]]
-        (problem.time - 2 < 0) ? return null : return sym_manip({verbal: false, inputs: new_inputs, time: problem.time - 2}, 'null', second_ops) 
+
+        var new_inputs = ['x', problem.inputs[2], problem.inputs[first_ops[1]] / problem.inputs[first_ops[0]]]
+        var symplified_problem = {verbal: false, inputs: new_inputs, time: problem.time - 2}
+        if (problem.time - 2 < 0) {return null} 
+        else {return sym_manip(symplified_problem, 'null', second_ops)}
       }
     }
   }
