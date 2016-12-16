@@ -131,23 +131,20 @@ var story2eq = function(problem){
   }
 }
 
-var getAnswerDist = function(problem, strategy) {
+var getAnswerDist = cache(function(problem, strategy) {
     // Do any necessary conversions
     // Time allotted per question: 6
-  var answerDist = cache(Infer ({method: 'forward'}, function(){
-      if (problem.verbal && (strategy[0] == 'sym_manip')) {
-        var problem = story2eq(problem) //deduction of two time units because of conversion
-      }
+  return Infer ({method: 'enumerate'}, function(){
+      var probToSolve = (problem.verbal && strategy[0] == 'sym_manip')? story2eq(problem) : problem;
       // Solve the problem with the given strategy!
       if (strategy[0] == "unwind") { 
-        return unwind(problem, strategy[1], strategy[2])
+        return unwind(probToSolve, strategy[1], strategy[2])
       } else if (strategy[0] == "sym_manip") { 
-        return sym_manip(problem, 6)
+        return sym_manip(probToSolve)
       } else { 
-        return guess_check(problem, 6) 
+        return guess_check(probToSolve) 
       }
   }))
-  return answerDist;
 }
 
 var model = function() {
