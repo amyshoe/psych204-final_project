@@ -1,9 +1,3 @@
-// // globalStore.time_allotted = 60
-// globalStore.time_elapsed = 0
-// var increment_time = function(t){globalStore.time_elapsed = globalStore.time_elapsed + t}
-
-//var time_elapse = function(time, lapse){return time - lapse}
-
 var unwind = function(problem, ops_order, num_seq){
   // Student could not solve problem
   if (ops_order[0] == 'panic') {
